@@ -57,7 +57,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     children: [
                       SizedBox(
                         height: availableHeight*0.1,
-                        width: availableHeight*0.1,
                         child: Image.asset('assets/images/logo.png'),
                       ),
                     ],
@@ -277,7 +276,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Image.asset('assets/images/apple.png'),
+                                    Image.asset('assets/images/apple.png', height: 24.0,),
                                     const SizedBox(
                                       width: 10,
                                     ),
@@ -311,7 +310,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Image.asset('assets/images/google.png'),
+                                      Image.asset('assets/images/google.png', height: 24.0,),
                                       const SizedBox(
                                         width: 10,
                                       ),
