@@ -358,7 +358,7 @@ class _SignupScreenState extends State<SignupScreen> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Image.asset('assets/images/apple.png'),
+                                Image.asset('assets/images/apple.png', height: 24.0,),
                                 const SizedBox(
                                   width: 10,
                                 ),
@@ -393,7 +393,7 @@ class _SignupScreenState extends State<SignupScreen> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Image.asset('assets/images/google.png'),
+                                  Image.asset('assets/images/google.png', height: 24.0,),
                                   const SizedBox(
                                     width: 10,
                                   ),
