@@ -18,7 +18,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
   bool? _isChecked = false;
 
-  void _showCountryPicker() async {}
+
 
   @override
   Widget build(BuildContext context) {
@@ -144,7 +144,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       ),
                       SizedBox(
                         
-                        width: mediaquery.size.width * 0.20,
+                        width: mediaquery.size.width * 0.15,
                         child: OutlinedButton(
                            style: ButtonStyle(
                               shape: MaterialStateProperty.all(
@@ -165,14 +165,20 @@ class _SignupScreenState extends State<SignupScreen> {
                             }
                           },
                           child: SizedBox(
-                            height: 62,
+                            
+                            height: 60.5,
                             child: Center(
-                              child: Text(
-                                code,
-                                style: GoogleFonts.poppins(
-                                  color: const Color.fromRGBO(140, 142, 151, 1),
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 14,
+                              child: Container(
+                                padding: const EdgeInsets.all(0),
+                                child: FittedBox(
+                                  child: Text(
+                                    code,
+                                    style: GoogleFonts.poppins(
+                                      color: const Color.fromRGBO(140, 142, 151, 1),
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 14,
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
@@ -180,7 +186,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         ),
                       ),
                       SizedBox(
-                        width: mediaquery.size.width * 0.75,
+                        width: mediaquery.size.width * 0.80,
                         child: TextField(
                           textInputAction: TextInputAction.next,
                           keyboardType: TextInputType.number,
