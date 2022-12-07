@@ -348,40 +348,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       SizedBox(
                         width: mediaquery.size.width * 0.04,
                       ),
-                      Container(
-                        margin: EdgeInsets.only(
-                            right: mediaquery.size.width * 0.03),
-                        child: OutlinedButton(
-                          style: ButtonStyle(
-                              shape: MaterialStateProperty.all(
-                                  const RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(10))))),
-                          onPressed: () {},
-                          child: SizedBox(
-                            height: availableHeight * 0.07,
-                            width: mediaquery.size.width * 0.32,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Image.asset('assets/images/apple.png', height: 24.0,),
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                Text(
-                                  'Apple',
-                                  style: GoogleFonts.poppins(
-                                    color:
-                                        const Color.fromRGBO(140, 142, 151, 1),
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 14,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
+                      
                       const Spacer(),
                       Container(
                           margin: EdgeInsets.only(
