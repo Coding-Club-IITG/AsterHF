@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>78016733517-1vnnnl415ejqj7ge62fpf8a7roj5b38m.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.78016733517-1vnnnl415ejqj7ge62fpf8a7roj5b38m</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBKfjAvI51z5O4WC6k_NhUklluJLgFV5KA</string>
+	<key>GCM_SENDER_ID</key>
+	<string>78016733517</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.asterHf</string>
+	<key>PROJECT_ID</key>
+	<string>asterhf-a5c24</string>
+	<key>STORAGE_BUCKET</key>
+	<string>asterhf-a5c24.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:78016733517:ios:015dab329553dfe7985704</string>
+	<key>DATABASE_URL</key>
+	<string>https://asterhf-a5c24-default-rtdb.firebaseio.com</string>
+</dict>
+</plist>

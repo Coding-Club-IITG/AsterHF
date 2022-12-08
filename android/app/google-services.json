@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "78016733517",
+    "firebase_url": "https://asterhf-a5c24-default-rtdb.firebaseio.com",
+    "project_id": "asterhf-a5c24",
+    "storage_bucket": "asterhf-a5c24.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:78016733517:android:b7d9baa42c05a4e8985704",
+        "android_client_info": {
+          "package_name": "com.example.aster_hf"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "78016733517-cshkabu0cgjjlf3vved8q6g70nu66nge.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAPPfq9YXqzQKAqYqUjksqX_ILSwCdD-9M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "78016733517-cshkabu0cgjjlf3vved8q6g70nu66nge.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
