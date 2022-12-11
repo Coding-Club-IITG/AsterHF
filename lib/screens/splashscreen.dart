@@ -1,5 +1,6 @@
 import 'package:aster_hf/screens/first_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -30,8 +31,8 @@ class _SplashScreenState extends State<SplashScreen> {
           mainAxisSize: MainAxisSize.min,
           children: [
             SizedBox(
-              height: 80,
-              width: 75,
+              height: 80.h,
+              width: 75.w,
               child: Image.asset('assets/images/logo.png'),
             ),
            Text(
@@ -39,7 +40,7 @@ class _SplashScreenState extends State<SplashScreen> {
               style: TextStyle(
                 color: Theme.of(context).primaryColor,
                 fontWeight: FontWeight.w600,
-                fontSize: 20,
+                fontSize: 20.sp,
               ),
             ),
           ],
