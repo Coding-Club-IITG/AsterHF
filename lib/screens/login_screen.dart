@@ -36,6 +36,20 @@ class _LoginScreenState extends State<LoginScreen> {
         _isLoading = false;
       });
 
+      final snackbar = SnackBar(
+        content: const Text('You\'ve successfully logged in!'),
+
+        // ignore: use_build_context_synchronously
+        backgroundColor: Theme.of(context).primaryColor,
+        behavior: SnackBarBehavior.floating,
+        margin: const EdgeInsets.all(50),
+      );
+
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(snackbar);
+      
+
+
       // ignore: use_build_context_synchronously
 
     } on FirebaseAuthException catch (error) {
@@ -175,7 +189,7 @@ class _LoginScreenState extends State<LoginScreen> {
         elevation: 0,
         backgroundColor: Colors.white,
         leading: IconButton(
-          iconSize: 24.h,
+          iconSize: 24.w,
           onPressed: Navigator.of(context).pop,
           icon: const Icon(
             Icons.arrow_back_ios_new_outlined,

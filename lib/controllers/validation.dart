@@ -13,7 +13,8 @@ String? validateEmail(String? formEmail) {
 }
 
 String? validateName(String? formName) {
-  final RegExp nameRegExp = RegExp('[a-zA-Z]');
+  final RegExp nameRegExp = RegExp(r"^[\p{L} ,.'-]*$",
+      caseSensitive: false, unicode: true, dotAll: true);
 
   if (formName == null || formName.isEmpty) {
     return 'Enter your Name';
@@ -27,11 +28,10 @@ String? validateName(String? formName) {
 }
 
 String? validatePassword(String? password) {
-
   if (password == null || password.isEmpty) {
     return 'Enter a password';
   } else if (password.length < 8) {
     return 'Your Password must have at least 8 characters';
-  } 
+  }
   return null;
 }

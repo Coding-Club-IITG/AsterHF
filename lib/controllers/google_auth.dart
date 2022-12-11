@@ -1,6 +1,3 @@
-import 'dart:html';
-
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -26,7 +23,7 @@ class Auth with ChangeNotifier {
           await FirebaseFirestore.instance
               .collection('users')
               .doc(email)
-              .set({'email': email, 'name': name});
+              .set({'name': name, 'email': email});
           final snackbar = SnackBar(
             content: const Text('You have successfully signed in with Google'),
 
@@ -63,7 +60,7 @@ class Auth with ChangeNotifier {
     }
   }
 
-  static Future<void> google_logout(context) async {
+  static Future<void> googleLogout(context) async {
     try {
       await GoogleSignIn().disconnect();
       FirebaseAuth.instance.signOut();
