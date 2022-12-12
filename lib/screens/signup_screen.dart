@@ -121,7 +121,7 @@ class _SignupScreenState extends State<SignupScreen> {
         elevation: 0,
         backgroundColor: Colors.white,
         leading: IconButton(
-          iconSize: 24.w,
+          iconSize: 24,
           onPressed: Navigator.of(context).pop,
           icon: const Icon(
             Icons.arrow_back_ios_new_outlined,
