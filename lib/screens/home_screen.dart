@@ -2,6 +2,8 @@ import 'package:aster_hf/widgets/home_screen/home_screen_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../widgets/button.dart';
+
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
 
@@ -11,6 +13,18 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int _selectedIndex = 0;
+  final String _username = 'Raghav';
+  List<Medicine> beforeMeal = [
+    Medicine(medicineName: 'Cofflet', quantity: '10ml'),
+    Medicine(medicineName: 'Cofflet', quantity: '10ml'),
+    Medicine(medicineName: 'Cofflet', quantity: '10ml'),
+  ];
+  List<Medicine> afterMeal = [
+    Medicine(medicineName: 'Dolo 650', quantity: '1'),
+    Medicine(medicineName: 'B Cosules', quantity: '2'),
+    Medicine(medicineName: 'B Cosules', quantity: '2'),
+    Medicine(medicineName: 'B Cosules', quantity: '2'),
+  ];
 
   void _onItemTapped(int index) {
     setState(() {
@@ -48,15 +62,15 @@ class _HomeState extends State<Home> {
                               Column(
                                 mainAxisSize: MainAxisSize.min,
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children: const [
-                                  Text('👋 Hello!',
+                                children: [
+                                  const Text('👋 Hello!',
                                       style: TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.w600,
                                           color: Colors.white)),
                                   Text(
-                                    'Raghav',
-                                    style: TextStyle(
+                                    _username,
+                                    style: const TextStyle(
                                         fontSize: 28,
                                         fontWeight: FontWeight.w400,
                                         color: Colors.white),
@@ -64,12 +78,15 @@ class _HomeState extends State<Home> {
                                 ],
                               ),
                               const Spacer(),
-                              const Padding(
-                                padding: EdgeInsets.symmetric(vertical: 10),
-                                child: Icon(
-                                  Icons.notifications_none_rounded,
-                                  size: 30,
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 10),
+                                child: IconButton(
+                                  onPressed: () {},
                                   color: Colors.white,
+                                  icon: const Icon(
+                                      Icons.notifications_none_rounded,
+                                      size: 30),
                                 ),
                               )
                             ],
@@ -105,17 +122,21 @@ class _HomeState extends State<Home> {
                                   ),
                                 ),
                               ),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 10),
-                                child: Container(
-                                  padding: const EdgeInsets.all(12),
-                                  width: 48,
-                                  height: 48,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(10),
+                              GestureDetector(
+                                onTap: () {},
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 10),
+                                  child: Container(
+                                    padding: const EdgeInsets.all(12),
+                                    width: 48,
+                                    height: 48,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Image.asset(
+                                        'assets/home/tune_icon.png'),
                                   ),
-                                  child: Image.asset('assets/home/tune_icon.png'),
                                 ),
                               )
                             ],
@@ -123,14 +144,8 @@ class _HomeState extends State<Home> {
                           const SizedBox(
                             height: 15,
                           ),
-                          Container(
-                            width: double.infinity,
-                            height: 128,
-                            decoration: BoxDecoration(
-                              color: Colors.grey,
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                          )
+                          DailyLogWidget(
+                              percentComplete: 78, completeDailyLog: () {})
                         ],
                       ),
                     ),
@@ -205,6 +220,84 @@ class _HomeState extends State<Home> {
                     )
                   ],
                 ),
+              ),
+              Stack(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 110.0),
+                    child: Image.asset(
+                      'assets/home/img_1.png',
+                      width: screenWidth,
+                    ),
+                  ),
+                  Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 10),
+                      height: 215,
+                      width: double.infinity,
+                      child: ListView(
+                        scrollDirection: Axis.horizontal,
+                        children: [
+                          MedicineWidget(
+                              isWidgetActive: true,
+                              timeForMedicineIntake: "Morning",
+                              beforeMeal: beforeMeal,
+                              afterMeal: afterMeal),
+                          MedicineWidget(
+                              isWidgetActive: false,
+                              timeForMedicineIntake: "Afternoon",
+                              beforeMeal: beforeMeal,
+                              afterMeal: afterMeal),
+                          MedicineWidget(
+                              isWidgetActive: false,
+                              timeForMedicineIntake: "Night",
+                              beforeMeal: beforeMeal,
+                              afterMeal: afterMeal),
+                        ],
+                      )),
+                  Positioned.fill(
+                    top: 230,
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Column(
+                        children: [
+                          const Text(
+                            'Call for an\nEmergency',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          Container(
+                            decoration: BoxDecoration(
+                                color: Theme.of(context).primaryColor,
+                                borderRadius: BorderRadius.circular(10)),
+                            child: Button(
+                              text: 'Call Now',
+                              width: screenWidth * 0.36,
+                              fontsize: 16,
+                              fontweight: FontWeight.w600,
+                              height: 48,
+                            ),
+                          ),
+                          Expanded(
+                            child: Container(
+                              decoration: const BoxDecoration(
+                                image: DecorationImage(
+                                    image: AssetImage('assets/home/img_2.png'),
+                                    fit: BoxFit.contain),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  )
+                ],
               ),
             ],
           ),
