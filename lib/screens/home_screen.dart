@@ -1,7 +1,6 @@
 import 'package:aster_hf/widgets/home_screen/home_screen_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import '../widgets/button.dart';
 
 class Home extends StatefulWidget {
@@ -189,13 +188,10 @@ class _HomeState extends State<Home> {
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(15)),
                           child: ActivityWidget(
-                              parameterWord1: 'Blood',
-                              parameterWord2: 'Pressure',
-                              units: 'bpm',
+                              vitalType: 1,
                               parameterValue: '141/90',
                               isProgress: true,
-                              lastUpdateTime: 4,
-                              lastUpdateTimeUnit: 'hrs'),
+                              ),
                         );
                       })),
               Padding(
