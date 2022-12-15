@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sample/time.dart';
+import 'package:aster_hf/widgets/time.dart';
 
 class Foodand_Pills extends StatefulWidget {
   final double height;
