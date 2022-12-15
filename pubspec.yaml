@@ -66,6 +66,7 @@ flutter:
   assets:
     - assets/images/
     - assets/home/
+    - assets/form_images/
     
 
   # An image asset can refer to one or more resolution-specific "variants", see
