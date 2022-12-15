@@ -125,7 +125,7 @@ class Row_image extends StatefulWidget {
 }
 
 class _Row_imageState extends State<Row_image> {
-  List<List<String>> _Urls=[['assets/madicine.png','assets/medicine_color.png'],['assets/plate.png','assets/plate_color.png'],['assets/fork.png','assets/fork_color.png']];
+  List<List<String>> _Urls=[['assets/form_images/madicine.png','assets/form_images/medicine_color.png'],['assets/form_images/plate.png','assets/form_images/plate_color.png'],['assets/form_images/fork.png','assets/form_images/fork_color.png']];
 
   List<List<int>> cordina=[[0,1,2],[2,0,1],[2,1,0]];
 
