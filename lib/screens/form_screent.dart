@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:sample/time.dart';
-
-import 'food_pills.dart';
+import 'package:aster_hf/widgets/food_pills.dart';
+import 'package:aster_hf/widgets/time.dart';
 
 
 class form_screen extends StatefulWidget {
