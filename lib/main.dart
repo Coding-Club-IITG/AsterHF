@@ -1,3 +1,4 @@
+import 'package:aster_hf/screens/home_screen.dart';
 import 'package:aster_hf/screens/splashscreen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import './screens/login_screen.dart';
 import './screens/signup_screen.dart';
+import 'widgets/home_screen//home_screen_widgets.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

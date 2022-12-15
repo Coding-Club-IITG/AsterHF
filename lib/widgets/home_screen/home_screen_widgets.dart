@@ -1,24 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:aster_hf/widgets/vital_type_list.dart';
 
 class ActivityWidget extends StatefulWidget {
-  final String parameterWord1;
-  final String parameterWord2;
-  final String units;
+  final int vitalType;
   final String parameterValue;
   final bool isProgress;
-  final int lastUpdateTime;
-  final String lastUpdateTimeUnit; // can take values mins, hrs or days
+
 
   ActivityWidget({
-    required this.parameterWord1,
-    required this.parameterWord2,
-    required this.units,
+    required this.vitalType,
     required this.parameterValue,
     required this.isProgress,
-    required this.lastUpdateTime,
-    required this.lastUpdateTimeUnit,
   });
 
   @override
@@ -39,11 +33,12 @@ class _ActivityWidgetState extends State<ActivityWidget> {
           ),
           borderRadius: const BorderRadius.all(Radius.circular(15))),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
             padding: const EdgeInsets.fromLTRB(15.0, 29.0, 9.0, 0.0),
             child: Text(
-              '${widget.parameterWord1}\n${widget.parameterWord2} ( ${widget.units} )\n',
+              '${vitalTypeWordOne[widget.vitalType]}\n${vitalTypeWordTwo[widget.vitalType]} ( ${vitalTypeUnits[widget.vitalType]} )\n',
               maxLines: 2,
               style: const TextStyle(
                 fontWeight: FontWeight.w600,
@@ -79,17 +74,6 @@ class _ActivityWidgetState extends State<ActivityWidget> {
                   ),
                 )
               ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(15.0, 0.0, 41.0, 0.0),
-            child: Text(
-              "Last ${widget.lastUpdateTime} ${widget.lastUpdateTimeUnit} ago",
-              style: const TextStyle(
-                fontSize: 12.0,
-                fontWeight: FontWeight.w400,
-                color: Color(0xFF8C8E97),
-              ),
             ),
           ),
         ],
