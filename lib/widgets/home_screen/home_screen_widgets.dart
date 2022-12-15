@@ -38,7 +38,7 @@ class _ActivityWidgetState extends State<ActivityWidget> {
           Padding(
             padding: const EdgeInsets.fromLTRB(15.0, 29.0, 9.0, 0.0),
             child: Text(
-              '${vitalTypeWordOne[widget.vitalType-1]}\n${vitalTypeWordTwo[widget.vitalType-1]} ( ${vitalTypeUnits[widget.vitalType]} )\n',
+              '${vitalTypeWordOne[widget.vitalType-1]}\n${vitalTypeWordTwo[widget.vitalType-1]} ( ${vitalTypeUnits[widget.vitalType-1]} )\n',
               maxLines: 2,
               style: const TextStyle(
                 fontWeight: FontWeight.w600,
