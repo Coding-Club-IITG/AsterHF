@@ -36,7 +36,7 @@ class _Time_containerState extends State<Time_container> {
           children: [
             Container(
               color: Colors.white,
-              height: 45,
+              height: widget.height,
               width: 45,
               child: TextField(
                 keyboardType: TextInputType.number,
@@ -64,12 +64,12 @@ class _Time_containerState extends State<Time_container> {
                 ),
               ),
             ),
-            SizedBox(width: 4,),
+            SizedBox(width: 5,),
             Text(':',style: TextStyle(fontSize: 20,color: Colors.grey.shade500),),
-            SizedBox(width: 4,),
+            SizedBox(width: 5,),
             Container(
               color: Colors.white,
-              height: 45,
+              height: widget.height,
               width: 45,
               child: TextField(
                 keyboardType: TextInputType.number,
@@ -100,6 +100,7 @@ class _Time_containerState extends State<Time_container> {
             ),
             SizedBox(width: 4,),
             Container(
+              height: widget.height,
               width: 50,
               decoration: BoxDecoration(
                 border: Border.all(
@@ -107,19 +108,16 @@ class _Time_containerState extends State<Time_container> {
                 ),
                 borderRadius: BorderRadius.circular(9)
               ),
+              alignment: Alignment.center,
               child: DropdownButtonHideUnderline(
                 child: ButtonTheme(
-                  alignedDropdown: true,
                   child: DropdownButton<String>(
-                    // hint: Text('Select Item:$dropdownValue'),
                     value: zone,
                     icon: SizedBox.shrink(),
                     onChanged: (String? value) {
-                      // StepState(() {
-                      //   nameController = value!;
-                      // });
                       callback(value!);
                     },
+                    alignment: Alignment.center,
                     items: item.map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
@@ -177,7 +175,6 @@ class _dropdown_headingState extends State<dropdown_heading> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Heading(heading: widget.heading),
-        Spacer(),
         Container(
           width: widget.width,
           decoration: BoxDecoration(

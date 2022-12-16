@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:aster_hf/widgets/food_pills.dart';
 import 'package:aster_hf/widgets/time.dart';
+import 'dart:math';
 
 
 class form_screen extends StatefulWidget {
@@ -140,7 +141,7 @@ class _form_screenState extends State<form_screen> {
                         child: Text('You can add reminders according to how the doctor has prescribed. Prescription automatically gets added if your doctor adds it to your account directly from his side', style: TextStyle(fontSize: 15, color: Colors.grey),),
               
                       ),
-                      Heading(heading: 'Medecine Name'),
+                      Heading(heading: 'Medecine Name',),
                       SizedBox(
                         child: TextField(
                           controller: medecine_name_cont,
@@ -165,12 +166,12 @@ class _form_screenState extends State<form_screen> {
                       Row(
                         children: [
                           SizedBox(
-                            height: height*0.085,
+                            height: max(height*0.09,67),
                             child: dropdown_heading(items: item_Amount, nameController: value_amount, callbackFunction: callback_amount, width: width*0.42, heading: 'Amount',)
                           ),
                           Spacer(),
                           SizedBox(
-                            height: height*0.085,
+                            height: max(height*0.09,67),
                             child: dropdown_heading(items: item_Repeat, nameController: value_repeat, callbackFunction: callback_repeat, width: width*0.42, heading: 'Repeat',)
                           ),
                         ],
@@ -179,56 +180,52 @@ class _form_screenState extends State<form_screen> {
                       Row(
                         children: [
                           SizedBox(
-                            height: height*0.085,
-                            child: dropdown_heading(items: item_Frequency, nameController: value_frequency, callbackFunction: callback_frequency, width: width*0.42, heading: 'Frequency',)
+                            height: max(height*0.09,67),
+                            child: dropdown_heading(items: item_Frequency, nameController: value_frequency, callbackFunction: callback_frequency, width: width*0.42, heading: 'Frequency',),
                             
                           ),
                           Spacer(),
                           SizedBox(
-                            height: height*0.085,
+                            height: max(height*0.09,67),
                             child: dropdown_heading(items: item_Howlong, nameController: value_howlong, callbackFunction: callback_howlong, width: width*0.42, heading: 'How Long',)
                           ),
                         ],
                       ),
                       
                       Container(
-                        height: height*0.133,
-                        child: Foodand_Pills(height: height*0.1,width: width*0.27,callbackFunction: callback_meal,which_time: during_meal,)
+                        height: max(height*0.133,103),
+                        child: Foodand_Pills(height: max(height*0.1,80),width: width*0.27,callbackFunction: callback_meal,which_time: during_meal,)
                       ),
                       
                       Row(
                         children: [
                           SizedBox(
-                            height: height*0.084,
-                            child: Time_container(height: height*0.084,callback_time: callback_time,),
+                            height: max(height*0.09,67),
+                            child: Time_container(height: height*0.055,callback_time: callback_time,),
                           ),
                           Spacer(),
-                          SizedBox(
-                            height: height*0.084,
-                            child: dropdown_heading(items: item_NextDosge, nameController: value_nextdosge, callbackFunction: callback_nextdosge, width: width*0.42, heading: 'Next Dosage',)
-                          ),
                         ],
                       ),
                       SizedBox(
-                        height: height*0.085,
+                        height: max(height*0.09,67),
                         child: dropdown_heading(items: item_Remindme, nameController: value_remindme, callbackFunction: callback_remindme, width: width*0.94, heading: 'Remind me',)
                       ),
-                      Container(
-                        width: double.infinity,
-                        alignment: Alignment.center,
-                        child: ElevatedButton(
-                          
-                          onPressed: () {
-                            _register();
-                          }, 
-                          child: Text('Save Medication Reminder'),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Color.fromARGB(255, 139, 49, 155), 
-                            shape: RoundedRectangleBorder( 
-                              borderRadius: BorderRadius.circular(9)
-                            ),
+                      GestureDetector(
+                        onTap: () {
+                          _register();
+                        }, 
+                        child: Container(
+                          width: double.infinity,
+                          height: max(height*0.055,43),
+                          alignment: Alignment.center,
+                          // child: ElevatedButton(
                             
+                          child: Text('Save Medication Reminder'),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(9)),
+                            color: Color(0xff695CD4),
                           ),
+                            
                         ),
                       ),
                     ],
@@ -256,91 +253,3 @@ class _form_screenState extends State<form_screen> {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// Widget buildTextField(String labelText, String placeholder , bool isPasswordTextField){
-//   return Padding(
-//     padding: const EdgeInsets.only(bottom: 15),
-//     child: TextField(
-//       obscureText: isPasswordTextField ? false : false,
-//       decoration: InputDecoration(
-//         suffixIcon: isPasswordTextField ?
-//         IconButton(
-//           onPressed: () {
-//           }, 
-//           icon: const Icon(
-//             Icons.remove_red_eye,
-//             color: Colors.grey,
-//           )
-//         ):null,
-//         contentPadding: const EdgeInsets.only(bottom: 5),
-//         labelText: labelText,
-//         floatingLabelBehavior: FloatingLabelBehavior.always,
-//         hintText: placeholder,
-//         hintStyle: const TextStyle(
-//           fontWeight: FontWeight.bold,
-//           color: Colors.grey,
-//         )
-//       ),
-//     ),
-//   );
-// }
-
-
-
-// class DropdownButtonExample extends StatefulWidget {
-//   const DropdownButtonExample({super.key});
-
-//   @override
-//   State<DropdownButtonExample> createState() => _DropdownButtonExampleState();
-// }
-
-// class _DropdownButtonExampleState extends State<DropdownButtonExample> {
-//   List<String> list = <String>[
-//       "Item 1","Item 2", "Item 3" ,"Item 4", "Item 5"
-//     ];
-//   String dropdownValue = "Item 1";
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return DropdownButton<String>(
-//       value: dropdownValue,
-//       icon: const Icon(Icons.arrow_downward),
-//       elevation: 16,
-//       style: const TextStyle(color: Colors.deepPurple),
-//       underline: Container(
-//         height: 2,
-//         color: Colors.deepPurpleAccent,
-//       ),
-//       onChanged: (String? value) {
-//         // This is called when the user selects an item.
-//         setState(() {
-//           dropdownValue = value!;
-//         });
-//       },
-//       items: list.map<DropdownMenuItem<String>>((String value) {
-//         return DropdownMenuItem<String>(
-//           value: value,
-//           child: Text(value),
-//         );
-//       }).toList(),
-//     );
-//   }
-// }

@@ -52,7 +52,7 @@ class _Foodand_PillsState extends State<Foodand_Pills> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     which_selected!=1 ? Row_image(which_color: 0, selected: 1,height: widget.height,width: widget.width,) :Row_image(which_color: 1, selected: 1,height: widget.height,width: widget.width,),
-                    which_selected!=1 ? Text('Before Meal') : Text('Before Meal' ,style: TextStyle(color: Colors.purple),),
+                    which_selected!=1 ? Text('Before Meal') : Text('Before Meal' ,style: TextStyle(color: Color(0xff695CD4)),),
                   ],
                 ),
               ),
@@ -77,7 +77,7 @@ class _Foodand_PillsState extends State<Foodand_Pills> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     which_selected!=2 ? Row_image(which_color: 0, selected: 2,height: widget.height,width: widget.width,) :Row_image(which_color: 1, selected: 2,height: widget.height,width: widget.width,),
-                    which_selected!=2 ? Text('During Meal') : Text('During Meal' ,style: TextStyle(color: Colors.purple),),
+                    which_selected!=2 ? Text('During Meal') : Text('During Meal' ,style: TextStyle(color: Color(0xff695CD4)),),
                   ],
                 ),
               ),
@@ -101,7 +101,7 @@ class _Foodand_PillsState extends State<Foodand_Pills> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     which_selected!=3 ? Row_image(which_color: 0, selected: 3,height: widget.height,width: widget.width,) :Row_image(which_color: 1, selected: 3,height: widget.height,width: widget.width,),
-                    which_selected!=3 ? Text('After Meal') : Text('After Meal' ,style: TextStyle(color: Colors.purple),),
+                    which_selected!=3 ? Text('After Meal') : Text('After Meal' ,style: TextStyle(color: Color(0xff695CD4)),),
                   ],
                 ),
               ),
@@ -112,6 +112,7 @@ class _Foodand_PillsState extends State<Foodand_Pills> {
     );
   }
 }
+
 
 class Row_image extends StatefulWidget {
   final int which_color;
