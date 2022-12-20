@@ -67,6 +67,8 @@ class _SignupScreenState extends State<SignupScreen> {
       });
       await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: _email, password: _password);
+      final user = FirebaseAuth.instance.currentUser!;
+      await user.sendEmailVerification();
       setState(() {
         _isLoading = false;
       });
@@ -75,7 +77,7 @@ class _SignupScreenState extends State<SignupScreen> {
           .doc(_email)
           .set({'name': _name, 'email': _email});
       final snackbar = SnackBar(
-        content: const Text('Your account has been successfully created'),
+        content:  const Text('Check your inbox to verfify your account'),
 
         // ignore: use_build_context_synchronously
         backgroundColor: Theme.of(context).primaryColor,

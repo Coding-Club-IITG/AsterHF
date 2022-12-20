@@ -35,7 +35,7 @@ class _Foodand_PillsState extends State<Foodand_Pills> {
             GestureDetector(
               onTap: () {
                 which_selected=1;
-                widget.callbackFunction(which_selected!);
+                widget.callbackFunction(which_selected);
                 setState(() {
                   which_selected=1;
                 });
@@ -60,7 +60,7 @@ class _Foodand_PillsState extends State<Foodand_Pills> {
             GestureDetector(
               onTap: () {
                 which_selected=2;
-                widget.callbackFunction(which_selected!);
+                widget.callbackFunction(which_selected);
                 setState(() {
                   which_selected=2;
                 });
@@ -84,7 +84,7 @@ class _Foodand_PillsState extends State<Foodand_Pills> {
             ),
             GestureDetector(
               onTap: () {
-                widget.callbackFunction(which_selected!);
+                widget.callbackFunction(which_selected);
                 setState(() {
                   which_selected=3;
                 });
