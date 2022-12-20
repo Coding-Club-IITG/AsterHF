@@ -6,7 +6,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import './screens/login_screen.dart';
 import './screens/signup_screen.dart';
-import 'widgets/home_screen//home_screen_widgets.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

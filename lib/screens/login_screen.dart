@@ -30,8 +30,62 @@ class _LoginScreenState extends State<LoginScreen> {
       setState(() {
         _isLoading = true;
       });
+
       await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: _email, password: _password);
+      final bool1 = FirebaseAuth.instance.currentUser!.emailVerified;
+
+      if (!bool1) {
+        showDialog(
+            context: context,
+            builder: (context) {
+              return Center(
+                child: AlertDialog(
+                  shape: RoundedRectangleBorder(
+                    side: BorderSide(
+                        color: Theme.of(context).splashColor, width: 2),
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(10),
+                    ),
+                  ),
+                  title: Text('Your Email not verfied , Send a verfication link to $_email ?'),
+                  
+                  actions: [
+                    TextButton(
+                      style: ButtonStyle(
+                          overlayColor: MaterialStateProperty.all(
+                              Theme.of(context).splashColor)),
+                      onPressed: () async {
+                        Navigator.pop(context);
+                        
+                      },
+                      child: Text(
+                        'Confirm',
+                        style: TextStyle(color: Theme.of(context).primaryColor),
+                      ),
+                    ),
+                    TextButton(
+                      style: ButtonStyle(
+                          overlayColor: MaterialStateProperty.all(
+                              Theme.of(context).splashColor)),
+                      onPressed: () async {
+                        Navigator.of(context).pop();
+                        final user = FirebaseAuth.instance.currentUser!;
+                        await user.sendEmailVerification();
+                       
+                      },
+                      child: Text(
+                        'Dismiss',
+                        style: TextStyle(color: Theme.of(context).primaryColor),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            });
+        
+      }
+
       setState(() {
         _isLoading = false;
       });
@@ -47,8 +101,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(snackbar);
-      
-
 
       // ignore: use_build_context_synchronously
 
