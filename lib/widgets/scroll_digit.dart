@@ -1,23 +1,21 @@
 import 'package:flutter/material.dart';
 
 class DigitScroll extends StatelessWidget {
-  int data;
+  final int data;
 
-  DigitScroll({required this.data});
+  const DigitScroll({super.key, required this.data});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5.0),
-      child: Container(
-        child: Center(
-          child: Text(
-            (data).toString(),
-            style: TextStyle(
-              fontSize: 32,
-              color: Colors.black,
-              fontWeight: FontWeight.w400,
-            ),
+      child: Center(
+        child: Text(
+          (data).toString(),
+          style: const TextStyle(
+            fontSize: 32,
+            color: Colors.black,
+            fontWeight: FontWeight.w400,
           ),
         ),
       ),

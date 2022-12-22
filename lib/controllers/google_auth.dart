@@ -1,8 +1,10 @@
+import 'package:aster_hf/screens/user_data.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Auth with ChangeNotifier {
   static Future<void> googleSignIn(context) async {
@@ -24,6 +26,10 @@ class Auth with ChangeNotifier {
               .collection('users')
               .doc(email)
               .set({'name': name, 'email': email});
+          // Obtain shared preferences.
+          
+
+
           final snackbar = SnackBar(
             content: const Text('You have successfully signed in with Google'),
 
@@ -34,6 +40,11 @@ class Auth with ChangeNotifier {
           );
 
           ScaffoldMessenger.of(context).showSnackBar(snackbar);
+          Navigator.of(context).pushReplacementNamed(UserData.routename,
+              arguments: {
+                'page':'blood_pressure',
+                'progress': 20
+              });
         } on FirebaseException catch (error) {
           final snackbar = SnackBar(
             content: Text(error.message ?? 'Something went wrong'),

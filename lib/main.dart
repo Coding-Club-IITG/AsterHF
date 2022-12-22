@@ -1,5 +1,8 @@
-import 'package:aster_hf/screens/home_screen.dart';
+
 import 'package:aster_hf/screens/splashscreen.dart';
+import 'package:aster_hf/screens/thankyou_screen.dart';
+import 'package:aster_hf/screens/user_data.dart';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -31,6 +34,8 @@ class MyApp extends StatelessWidget {
         routes: {
           LoginScreen.routename: (context) => const LoginScreen(),
           SignupScreen.routename: (context) => const SignupScreen(),
+          UserData.routename:(context) =>  UserData(),
+          ThankYouScreen.routename:(context) => const ThankYouScreen()
         },
       ),
     );
