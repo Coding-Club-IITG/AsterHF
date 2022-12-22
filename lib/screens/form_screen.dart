@@ -287,7 +287,7 @@ class _formScreenState extends State<formScreen> {
                       ),
                       SizedBox(height: 3,),
                       SizedBox(
-                        height: max(height*0.09,67),
+                        height: max(height*0.09,75),
                         child: dropdownWithHeading(items: itemReminders, nameController: valueReminder, callbackFunction: callbackReminder, width: width, heading: 'Remind me',)
                       ),
                       SizedBox(height: 10,),
