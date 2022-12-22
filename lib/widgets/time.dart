@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class Time_container extends StatefulWidget {
+class timeContainer extends StatefulWidget {
   final double height;
   final Function callback_time;
-  const Time_container({Key? mykey, required this.height, required this.callback_time }): super(key: mykey);
+  const timeContainer({Key? mykey, required this.height, required this.callback_time }): super(key: mykey);
 
   @override
-  State<Time_container> createState() => _Time_containerState();
+  State<timeContainer> createState() => _timeContainerState();
 }
 
-class _Time_containerState extends State<Time_container> {
+class _timeContainerState extends State<timeContainer> {
   var passController = TextEditingController();
   final item = ['AM','PM'];
   var hours_ = TextEditingController();
@@ -42,20 +42,20 @@ class _Time_containerState extends State<Time_container> {
                 keyboardType: TextInputType.number,
                 controller: hours_,
                 onChanged: (text) {
-                  widget.callback_time(hours_.text+'-'+minutes_.text+'-'+zone);
+                  widget.callback_time(_time(hours_, minutes_, zone));
                 },
                 style: TextStyle(
-                  color: Colors.grey
+                  color: Color(0xff8C8E97)
                 ),
                 inputFormatters: [
-                  CustomRangeTextInputFormatter(rang_: 12),
+                  customRangeTextInputFormatter(rang_: 12),
                 ],
                 textAlign: TextAlign.center,
                 decoration: InputDecoration(
                   contentPadding: EdgeInsets.only(top: 5),
                   hintText: "00",
                   hintStyle: TextStyle(
-                    color: Colors.grey,
+                    color: Color(0xff8C8E97),
                   ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(9)),
@@ -65,7 +65,7 @@ class _Time_containerState extends State<Time_container> {
               ),
             ),
             SizedBox(width: 5,),
-            Text(':',style: TextStyle(fontSize: 20,color: Colors.grey.shade500),),
+            Text(':',style: TextStyle(fontSize: 20,color: Color(0xff8C8E97),),),
             SizedBox(width: 5,),
             Container(
               color: Colors.white,
@@ -75,20 +75,21 @@ class _Time_containerState extends State<Time_container> {
                 keyboardType: TextInputType.number,
                 controller: minutes_,
                 onChanged: (text) {
-                  widget.callback_time(hours_.text+'-'+minutes_.text+'-'+zone);
+                  
+                  widget.callback_time(_time(hours_, minutes_, zone));
                 },
                 style: TextStyle(
-                  color: Colors.grey
+                  color: Color(0xff8C8E97),
                 ),
                 inputFormatters: [
-                  CustomRangeTextInputFormatter(rang_: 60),
+                  customRangeTextInputFormatter(rang_: 60),
                 ],
                 textAlign: TextAlign.center,
                 decoration: InputDecoration(
                   contentPadding: EdgeInsets.only(top: 5),
                   hintText: "00",
                   hintStyle: TextStyle(
-                    color: Colors.grey,
+                    color: Color(0xff8C8E97),
                   ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(9)),
@@ -104,7 +105,7 @@ class _Time_containerState extends State<Time_container> {
               width: 50,
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: Colors.grey
+                  color: Color(0xff8C8E97),
                 ),
                 borderRadius: BorderRadius.circular(9)
               ),
@@ -115,13 +116,18 @@ class _Time_containerState extends State<Time_container> {
                     value: zone,
                     icon: SizedBox.shrink(),
                     onChanged: (String? value) {
-                      callback(value!);
+                      // callback(value!);
+                      zone=value!;
+                      widget.callback_time(_time(hours_, minutes_, zone));
+                      setState(() {
+                        zone=value;
+                      });
                     },
                     alignment: Alignment.center,
                     items: item.map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
-                        child: Text(value,style: TextStyle(color: Colors.grey),),
+                        child: Text(value,style: TextStyle(color: Color(0xff8C8E97),)),
                       );
                     }).toList(),
                   ),
@@ -134,12 +140,26 @@ class _Time_containerState extends State<Time_container> {
       ],
     );
   }
+  String _time(TextEditingController h,TextEditingController m,String s){
+    if(h==null && m == null){
+      return '00-00-'+s;
+    }
+    else if(h==null){
+      return '00-'+m.text+'-'+s;
+    }
+    else if(m==null){
+      return h.text+'-00-'+s;
+    }
+    else{
+      return h.text+'-'+m.text+'-'+s;
+    }
+  }
 }
 
-class CustomRangeTextInputFormatter extends TextInputFormatter {
+class customRangeTextInputFormatter extends TextInputFormatter {
   final int rang_;
 
-   CustomRangeTextInputFormatter({required this.rang_});
+   customRangeTextInputFormatter({required this.rang_});
   @override
   TextEditingValue formatEditUpdate(TextEditingValue oldValue,TextEditingValue newValue,) { 
     if(newValue.text == '')
@@ -153,7 +173,7 @@ class CustomRangeTextInputFormatter extends TextInputFormatter {
 
 
 
-class dropdown_heading extends StatefulWidget {
+class dropdownWithHeading extends StatefulWidget {
   final List<String> items;
   final String nameController;
   final Function callbackFunction;
@@ -161,13 +181,13 @@ class dropdown_heading extends StatefulWidget {
   final String heading;
 
   // const dropdown_heading({super.key});
-  const dropdown_heading({Key? mykey, required this.items, required this.nameController, required this.callbackFunction, required this.width, required this.heading}) : super(key: mykey);
+  const dropdownWithHeading({Key? mykey, required this.items, required this.nameController, required this.callbackFunction, required this.width, required this.heading}) : super(key: mykey);
 
   @override
-  State<dropdown_heading> createState() => _dropdown_headingState();
+  State<dropdownWithHeading> createState() => _dropdownWithHeadingState();
 }
 
-class _dropdown_headingState extends State<dropdown_heading> {
+class _dropdownWithHeadingState extends State<dropdownWithHeading> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -175,11 +195,12 @@ class _dropdown_headingState extends State<dropdown_heading> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Heading(heading: widget.heading),
+        SizedBox(height: 5,),
         Container(
           width: widget.width,
           decoration: BoxDecoration(
             border: Border.all(
-              color: Colors.grey,
+              color: Color(0xff8C8E97),
             ),
             borderRadius: BorderRadius.circular(9)
 
@@ -218,19 +239,18 @@ class _getTextState extends State<getText> {
       child: ButtonTheme(
         alignedDropdown: true,
         child: DropdownButton<String>(
-          // hint: Text('Select Item:$dropdownValue'),
           value: widget.nameController,
-          icon: Icon(Icons.arrow_drop_down),
+          // icon: const Padding(
+          //   padding: EdgeInsets.fromLTRB(0, 0, 3, 0),
+          //   child: Icon(Icons.down,size: 15,color: Color(0xff8C8E97),),
+          // ),
           onChanged: (String? value) {
-            // StepState(() {
-            //   nameController = value!;
-            // });
             widget.callbackFunction(value!);
           },
           items: widget.items.map<DropdownMenuItem<String>>((String value) {
             return DropdownMenuItem<String>(
               value: value,
-              child: Text(value,style: TextStyle(color: Colors.grey),),
+              child: Text(value,style: TextStyle(color: Color(0xff8C8E97)),),
             );
           }).toList(),
         ),
