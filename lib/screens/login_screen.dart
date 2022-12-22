@@ -1,4 +1,5 @@
 import 'package:aster_hf/screens/signup_screen.dart';
+import 'package:aster_hf/screens/user_data.dart';
 import 'package:aster_hf/widgets/button.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +7,7 @@ import '../controllers/validation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../controllers/google_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -34,6 +36,7 @@ class _LoginScreenState extends State<LoginScreen> {
       await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: _email, password: _password);
       final bool1 = FirebaseAuth.instance.currentUser!.emailVerified;
+      
 
       if (!bool1) {
         showDialog(
@@ -48,8 +51,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       Radius.circular(10),
                     ),
                   ),
-                  title: Text('Your Email not verfied , Send a verfication link to $_email ?'),
-                  
+                  title: Text(
+                      'Your Email not verfied , Send a verfication link to $_email ?'),
                   actions: [
                     TextButton(
                       style: ButtonStyle(
@@ -57,7 +60,6 @@ class _LoginScreenState extends State<LoginScreen> {
                               Theme.of(context).splashColor)),
                       onPressed: () async {
                         Navigator.pop(context);
-                        
                       },
                       child: Text(
                         'Confirm',
@@ -72,7 +74,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         Navigator.of(context).pop();
                         final user = FirebaseAuth.instance.currentUser!;
                         await user.sendEmailVerification();
-                       
                       },
                       child: Text(
                         'Dismiss',
@@ -83,27 +84,29 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               );
             });
+      } else {
+      
         
-      }
+        setState(() {
+          _isLoading = false;
+        });
 
-      setState(() {
-        _isLoading = false;
-      });
+        final snackbar = SnackBar(
+          content: const Text('You\'ve successfully logged in!'),
 
-      final snackbar = SnackBar(
-        content: const Text('You\'ve successfully logged in!'),
+          // ignore: use_build_context_synchronously
+          backgroundColor: Theme.of(context).primaryColor,
+          behavior: SnackBarBehavior.floating,
+          margin: const EdgeInsets.all(50),
+        );
+
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(snackbar);
+          Navigator.of(context).pushReplacementNamed(UserData.routename);
+
 
         // ignore: use_build_context_synchronously
-        backgroundColor: Theme.of(context).primaryColor,
-        behavior: SnackBarBehavior.floating,
-        margin: const EdgeInsets.all(50),
-      );
-
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(snackbar);
-
-      // ignore: use_build_context_synchronously
-
+      }
     } on FirebaseAuthException catch (error) {
       errorMessage = error.message ?? 'Something went Wrong!';
 
