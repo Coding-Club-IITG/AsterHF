@@ -1,8 +1,11 @@
 import 'package:aster_hf/widgets/home_screen/home_screen_widgets.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 import '../widgets/button.dart';
+import '../widgets/home_screen/medicine_widget.dart';
 import 'package:aster_hf/widgets/home_screen/emergency_contacts_lists.dart';
 import 'package:firebase_core/firebase_core.dart';
 
@@ -14,30 +17,40 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  int _selectedIndex = 0;
-  final String _username = 'Raghav';
-  List<Medicine> beforeMeal = [
-    Medicine(medicineName: 'Cofflet', quantity: '10ml'),
-    Medicine(medicineName: 'Cofflet', quantity: '10ml'),
-    Medicine(medicineName: 'Cofflet', quantity: '10ml'),
+  // int _selectedIndex = 0;
+  String? _username = 'Raghav';
+  CollectionReference firebaseUser = FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser!.email) as CollectionReference<Object?>;
+  List<List<Medicine>> morningReminder = List.generate(3, (index) => []);
+  List<List<Medicine>> afternoonReminder = List.generate(3, (index) => []);
+  List<List<Medicine>> eveningReminder = List.generate(3, (index) => []);
+  List<DateTime> medTime = [
+    DateFormat.jm().parse('12:00 PM'),
+    DateFormat.jm().parse('6:00 PM')
   ];
-  List<Medicine> afterMeal = [
-    Medicine(medicineName: 'Dolo 650', quantity: '1'),
-    Medicine(medicineName: 'B Cosules', quantity: '2'),
-    Medicine(medicineName: 'B Cosules', quantity: '2'),
-    Medicine(medicineName: 'B Cosules', quantity: '2'),
+  List<DateTime> morningTime = [
+    DateFormat.jm().parse('9:00 AM'),
+    DateFormat.jm().parse('10:00 AM')
+  ];
+  List<DateTime> afternoonTime = [
+    DateFormat.jm().parse('2:00 PM'),
+    DateFormat.jm().parse('3:00 PM')
+  ];
+  List<DateTime> eveningTime = [
+    DateFormat.jm().parse('8:00 PM'),
+    DateFormat.jm().parse('9:00 PM')
   ];
 
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
+  // void _onItemTapped(int index) {
+  //   setState(() {
+  //     _selectedIndex = index;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
+    // double screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       backgroundColor: const Color(0xFFF2F4F6),
       body: Container(
@@ -71,7 +84,7 @@ class _HomeState extends State<Home> {
                                           fontWeight: FontWeight.w600,
                                           color: Colors.white)),
                                   Text(
-                                    _username,
+                                    _username!,
                                     style: const TextStyle(
                                         fontSize: 28,
                                         fontWeight: FontWeight.w400,
@@ -324,7 +337,7 @@ class _HomeState extends State<Home> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Row(
-                  children: [
+                  children:[
                     const Text(
                       "Medicine Reminders",
                       style:
@@ -353,31 +366,91 @@ class _HomeState extends State<Home> {
                       width: screenWidth,
                     ),
                   ),
-                  Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 10),
-                      height: 215,
-                      width: double.infinity,
-                      child: ListView(
-                        scrollDirection: Axis.horizontal,
-                        children: [
-                          MedicineWidget(
-                              isWidgetActive: true,
-                              timeForMedicineIntake: "Morning",
-                              beforeMeal: beforeMeal,
-                              afterMeal: afterMeal),
-                          MedicineWidget(
-                              isWidgetActive: false,
-                              timeForMedicineIntake: "Afternoon",
-                              beforeMeal: beforeMeal,
-                              afterMeal: afterMeal),
-                          MedicineWidget(
-                              isWidgetActive: false,
-                              timeForMedicineIntake: "Night",
-                              beforeMeal: beforeMeal,
-                              afterMeal: afterMeal),
-                        ],
-                      )),
+                  StreamBuilder(
+                      stream: FirebaseFirestore.instance
+                          .collection('users')
+                          .doc(firebaseUser.id)
+                          .collection('Reminder')
+                          .snapshots(),
+                      builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                        morningReminder = List.generate(3, (index) => []);
+                        afternoonReminder = List.generate(3, (index) => []);
+                        eveningReminder = List.generate(3, (index) => []);
+                        int currReminder, currReminderTime;
+                        List<List<List<Medicine>>> reminder = [
+                          morningReminder,
+                           afternoonReminder,
+                          eveningReminder
+                        ];
+                        List<List<DateTime>> reminderTime = [
+                          morningTime,
+                          afternoonTime,
+                          eveningTime
+                        ];
+                        if (!snapshot.hasData) {
+                          return const SizedBox(
+                            height: 0,
+                          );
+                        }
+                        for (var ind = 0;
+                            ind < snapshot.data!.docs.length;
+                            ind++) {
+                          Map<String, dynamic> data =
+                              snapshot.data!.docs[ind].data() as Map<String, dynamic>;
+                          Medicine currMed = Medicine(
+                              medicineName: data['medicineName'],
+                              quantity: data['amount']);
+                          DateTime currTime =
+                              DateFormat.jm().parse(data['timeReminder']);
+                          if (currTime.isBefore(medTime[0])) {
+                            currReminder = 0;
+                          } else if (currTime.isBefore(medTime[1])) {
+                            currReminder = 1;
+                          } else {
+                            currReminder = 2;
+                          }
+
+                          if (currTime
+                              .isBefore(reminderTime[currReminder][0])) {
+                            currReminderTime = 0;
+                          } else if (currTime
+                              .isBefore(reminderTime[currReminder][1])) {
+                            currReminderTime = 1;
+                          } else {
+                            currReminderTime = 2;
+                          }
+
+                          reminder[currReminder][currReminderTime].add(currMed);
+                        }
+                        return Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 10),
+                            height: 215,
+                            width: double.infinity,
+                            child: ListView(
+                              scrollDirection: Axis.horizontal,
+                              children: [
+                                MedicineWidget(
+                                    // isWidgetActive: true,
+                                    timeForMedicineIntake: "Morning",
+                                    beforeMeal: morningReminder[0],
+                                    duringMeal: morningReminder[1],
+                                    afterMeal: morningReminder[2]),
+                                MedicineWidget(
+                                    // isWidgetActive: false,
+                                    timeForMedicineIntake: "Afternoon",
+                                    beforeMeal: afternoonReminder[0],
+                                    duringMeal: afternoonReminder[1],
+                                    afterMeal: afternoonReminder[2]),
+                                MedicineWidget(
+                                    // isWidgetActive: false,
+                                    timeForMedicineIntake: "Night",
+                                    beforeMeal: eveningReminder[0],
+                                    duringMeal: eveningReminder[1],
+                                    afterMeal: eveningReminder[2]),
+                              ],
+                            ));
+                      }),
                   Positioned.fill(
                     top: 230,
                     child: Align(
@@ -519,31 +592,31 @@ class _HomeState extends State<Home> {
           ),
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        backgroundColor: const Color(0xFFFDFDFD),
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home_rounded),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.apartment_rounded),
-            label: 'Med Card',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.group_outlined),
-            label: 'Community',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person_outline_rounded),
-            label: 'Profile',
-          )
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Theme.of(context).primaryColor,
-        onTap: _onItemTapped,
-      ),
+      // bottomNavigationBar: BottomNavigationBar(
+      //   type: BottomNavigationBarType.fixed,
+      //   backgroundColor: const Color(0xFFFDFDFD),
+      //   items: const <BottomNavigationBarItem>[
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.home_rounded),
+      //       label: 'Home',
+      //     ),
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.apartment_rounded),
+      //       label: 'Med Card',
+      //     ),
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.group_outlined),
+      //       label: 'Community',
+      //     ),
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.person_outline_rounded),
+      //       label: 'Profile',
+      //     )
+      //   ],
+      //   currentIndex: _selectedIndex,
+      //   selectedItemColor: Theme.of(context).primaryColor,
+      //   onTap: _onItemTapped,
+      // ),
     );
   }
 }
