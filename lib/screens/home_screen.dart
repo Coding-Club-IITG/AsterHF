@@ -1,7 +1,10 @@
 import 'package:aster_hf/widgets/home_screen/home_screen_widgets.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../widgets/button.dart';
+import 'package:aster_hf/widgets/home_screen/emergency_contacts_lists.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -143,8 +146,52 @@ class _HomeState extends State<Home> {
                           const SizedBox(
                             height: 15,
                           ),
-                          DailyLogWidget(
-                              percentComplete: 78, completeDailyLog: () {})
+                          FutureBuilder<Object>(
+                              future: FirebaseFirestore.instance
+                                  .collection("users")
+                                  .doc("s.r.ghosarwadkar@gmail.com")
+                                  .collection("Vitals")
+                                  .doc('23-12-2022')
+                                  .get(),
+                              builder: (context, AsyncSnapshot snapshot) {
+                                int countOfVitals = 0;
+                                if (snapshot.hasError) {
+                                  return Text('Something went wrong');
+                                }
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return CircularProgressIndicator();
+                                }
+                                if (snapshot.data!
+                                    .data()!
+                                    .containsKey('blood_oxygen')) {
+                                  countOfVitals++;
+                                }
+                                if (snapshot.data!
+                                    .data()!
+                                    .containsKey('body_weight')) {
+                                  countOfVitals++;
+                                }
+                                if (snapshot.data!
+                                    .data()!
+                                    .containsKey('blood_pressure')) {
+                                  countOfVitals++;
+                                }
+                                if (snapshot.data!
+                                    .data()!
+                                    .containsKey('glucose_level')) {
+                                  countOfVitals++;
+                                }
+                                if (snapshot.data!
+                                    .data()!
+                                    .containsKey('heart_rate')) {
+                                  countOfVitals++;
+                                }
+                                return DailyLogWidget(
+                                    percentComplete:
+                                        ((countOfVitals / 5) * 100).toInt(),
+                                    completeDailyLog: () {});
+                              })
                         ],
                       ),
                     ),
@@ -177,21 +224,101 @@ class _HomeState extends State<Home> {
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   height: 160,
                   width: double.infinity,
-                  child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: 5,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Container(
-                          margin: const EdgeInsets.only(right: 10),
-                          width: 145,
-                          height: 135,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15)),
-                          child: ActivityWidget(
-                              vitalType: 1,
-                              parameterValue: '141/90',
-                              isProgress: true,
-                              ),
+                  child: FutureBuilder(
+                      future: FirebaseFirestore.instance
+                          .collection("users")
+                          .doc("s.r.ghosarwadkar@gmail.com")
+                          .collection("Vitals")
+                          .doc('23-12-2022')
+                          .get(),
+                      builder: (BuildContext context, AsyncSnapshot snapshot) {
+                        List<Widget> toShow = [];
+                        if (snapshot.hasError) {
+                          return Text('Something went wrong');
+                        }
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return CircularProgressIndicator();
+                        }
+                        if (snapshot.data!
+                            .data()!
+                            .containsKey('blood_oxygen')) {
+                          toShow.add(Container(
+                            margin: const EdgeInsets.only(right: 10),
+                            width: 145,
+                            height: 135,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15)),
+                            child: ActivityWidget(
+                                vitalType: 5,
+                                parameterValue:
+                                    snapshot.data['blood_oxygen'].toString(),
+                                isProgress: true),
+                          ));
+                        }
+                        if (snapshot.data!.data()!.containsKey('body_weight')) {
+                          toShow.add(Container(
+                            margin: const EdgeInsets.only(right: 10),
+                            width: 145,
+                            height: 135,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15)),
+                            child: ActivityWidget(
+                                vitalType: 2,
+                                parameterValue:
+                                    snapshot.data['body_weight'].toString(),
+                                isProgress: true),
+                          ));
+                        }
+                        if (snapshot.data!
+                            .data()!
+                            .containsKey('blood_pressure')) {
+                          toShow.add(Container(
+                            margin: const EdgeInsets.only(right: 10),
+                            width: 145,
+                            height: 135,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15)),
+                            child: ActivityWidget(
+                                vitalType: 1,
+                                parameterValue:
+                                    "${snapshot.data['blood_oxygen']['Sys']}/${snapshot.data['blood_oxygen']['Dia']}",
+                                isProgress: true),
+                          ));
+                        }
+                        if (snapshot.data!
+                            .data()!
+                            .containsKey('glucose_level')) {
+                          toShow.add(Container(
+                            margin: const EdgeInsets.only(right: 10),
+                            width: 145,
+                            height: 135,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15)),
+                            child: ActivityWidget(
+                                vitalType: 3,
+                                parameterValue:
+                                    "${snapshot.data['glucose_level']}",
+                                isProgress: true),
+                          ));
+                        }
+                        if (snapshot.data!.data()!.containsKey('heart_rate')) {
+                          toShow.add(Container(
+                            margin: const EdgeInsets.only(right: 10),
+                            width: 145,
+                            height: 135,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15)),
+                            child: ActivityWidget(
+                                vitalType: 4,
+                                parameterValue:
+                                    "${snapshot.data['heart_rate']}",
+                                isProgress: true),
+                          ));
+                        }
+                        return ListView(
+                          scrollDirection: Axis.horizontal,
+                          children: toShow,
                         );
                       })),
               Padding(
@@ -272,12 +399,105 @@ class _HomeState extends State<Home> {
                             decoration: BoxDecoration(
                                 color: Theme.of(context).primaryColor,
                                 borderRadius: BorderRadius.circular(10)),
-                            child: Button(
-                              text: 'Call Now',
-                              width: screenWidth * 0.36,
-                              fontsize: 16,
-                              fontweight: FontWeight.w600,
-                              height: 48,
+                            child: GestureDetector(
+                              child: Button(
+                                text: 'Call Now',
+                                width: screenWidth * 0.36,
+                                fontsize: 16,
+                                fontweight: FontWeight.w600,
+                                height: 48,
+                              ),
+                              onTap: () {
+                                showModalBottomSheet(
+                                    backgroundColor: Color(0xFFFFFFFF),
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return Container(
+                                        height: 204,
+                                        child: Padding(
+                                          padding: const EdgeInsets.fromLTRB(
+                                              23, 0, 41, 0),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              SizedBox(height: 20),
+                                              SizedBox(
+                                                height: 180,
+                                                child: ListView.builder(
+                                                    itemCount: emergencyContacts
+                                                        .length,
+                                                    itemBuilder:
+                                                        (BuildContext context,
+                                                            int index) {
+                                                      return Container(
+                                                          color:
+                                                              Color(0xFFFFFFFF),
+                                                          height: 48,
+                                                          child: Row(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .center,
+                                                            children: [
+                                                              Image.asset(
+                                                                emergencyContacts[index]
+                                                                            .contactName ==
+                                                                        "Ambulance"
+                                                                    ? 'assets/images/ambulance_logo.png'
+                                                                    : 'assets/images/doctor_logo.png',
+                                                                height: 20,
+                                                                width: 20,
+                                                              ),
+                                                              SizedBox(
+                                                                width: 27,
+                                                              ),
+                                                              Column(
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  Text(
+                                                                      emergencyContacts[index]
+                                                                          .contactName,
+                                                                      style: TextStyle(
+                                                                          color: Color(
+                                                                              0xFF695CD4),
+                                                                          fontSize:
+                                                                              14,
+                                                                          fontWeight:
+                                                                              FontWeight.w600)),
+                                                                  Text(
+                                                                      emergencyContacts[index]
+                                                                          .contactSpeciality,
+                                                                      style: TextStyle(
+                                                                          color: Color(
+                                                                              0xFF000000),
+                                                                          fontSize:
+                                                                              12,
+                                                                          fontWeight:
+                                                                              FontWeight.w400)),
+                                                                ],
+                                                              ),
+                                                              Spacer(),
+                                                              GestureDetector(
+                                                                onTap: () {},
+                                                                child:
+                                                                    Image.asset(
+                                                                  'assets/images/call_logo.png',
+                                                                  height: 20,
+                                                                  width: 20,
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ));
+                                                    }),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    });
+                              },
                             ),
                           ),
                           Expanded(

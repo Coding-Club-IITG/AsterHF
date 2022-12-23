@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:aster_hf/widgets/vital_type_list.dart';
 
-class ActivityWidget extends StatefulWidget {
+class ActivityWidget extends StatelessWidget {
   final int vitalType;
   final String parameterValue;
   final bool isProgress;
@@ -15,11 +15,6 @@ class ActivityWidget extends StatefulWidget {
     required this.isProgress,
   });
 
-  @override
-  State<ActivityWidget> createState() => _ActivityWidgetState();
-}
-
-class _ActivityWidgetState extends State<ActivityWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -38,7 +33,7 @@ class _ActivityWidgetState extends State<ActivityWidget> {
           Padding(
             padding: const EdgeInsets.fromLTRB(15.0, 29.0, 9.0, 0.0),
             child: Text(
-              '${vitalTypeWordOne[widget.vitalType-1]}\n${vitalTypeWordTwo[widget.vitalType-1]} ( ${vitalTypeUnits[widget.vitalType-1]} )\n',
+              '${vitalTypeWordOne[vitalType-1]}\n${vitalTypeWordTwo[vitalType-1]} ( ${vitalTypeUnits[vitalType-1]} )\n',
               maxLines: 2,
               style: const TextStyle(
                 fontWeight: FontWeight.w600,
@@ -54,10 +49,10 @@ class _ActivityWidgetState extends State<ActivityWidget> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  widget.parameterValue,
+                  parameterValue,
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
-                    color: widget.isProgress
+                    color: isProgress
                         ? const Color(0xFF39CA76)
                         : const Color(0xFFFD4747),
                     fontSize: 16.0,
@@ -66,7 +61,7 @@ class _ActivityWidgetState extends State<ActivityWidget> {
                 Expanded(
                   flex: 1,
                   child: Image.asset(
-                    widget.isProgress
+                    isProgress
                         ? 'assets/home/progress.png'
                         : 'assets/home/regress.png',
                     height: 8.0,
