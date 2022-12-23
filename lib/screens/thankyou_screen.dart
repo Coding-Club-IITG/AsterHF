@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -14,7 +13,7 @@ class ThankYouScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
-        alignment: Alignment(0, 0.65),
+        alignment: const Alignment(0, 0.65),
         children: [
           Center(
             child: Column(
@@ -51,6 +50,8 @@ class ThankYouScreen extends StatelessWidget {
             color: Theme.of(context).primaryColor,
             borderRadius: const BorderRadius.all(Radius.circular(10)),
             child: InkWell(
+               splashColor: const Color.fromRGBO(105, 92, 212, 0.8),
+              borderRadius: const BorderRadius.all(Radius.circular(10)),
               onTap: () async {
                 try {
                   final user = FirebaseAuth.instance.currentUser;
