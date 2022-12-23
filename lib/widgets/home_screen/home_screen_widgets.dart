@@ -8,7 +8,6 @@ class ActivityWidget extends StatefulWidget {
   final String parameterValue;
   final bool isProgress;
 
-
   ActivityWidget({
     required this.vitalType,
     required this.parameterValue,
@@ -38,7 +37,7 @@ class _ActivityWidgetState extends State<ActivityWidget> {
           Padding(
             padding: const EdgeInsets.fromLTRB(15.0, 29.0, 9.0, 0.0),
             child: Text(
-              '${vitalTypeWordOne[widget.vitalType-1]}\n${vitalTypeWordTwo[widget.vitalType-1]} ( ${vitalTypeUnits[widget.vitalType-1]} )\n',
+              '${vitalTypeWordOne[widget.vitalType - 1]}\n${vitalTypeWordTwo[widget.vitalType - 1]} ( ${vitalTypeUnits[widget.vitalType - 1]} )\n',
               maxLines: 2,
               style: const TextStyle(
                 fontWeight: FontWeight.w600,
@@ -120,7 +119,9 @@ class _DailyLogWidgetState extends State<DailyLogWidget> {
                   Text(
                     (widget.percentComplete == 100)
                         ? "Your daily log \nis complete!"
-                        : "Your daily log \nis almost done!",
+                        : (widget.percentComplete > 50)
+                            ? "Your daily log \nis almost done!"
+                            : "Please complete \nyour daily log!",
                     maxLines: 2,
                     style: const TextStyle(
                       fontWeight: FontWeight.w500,
@@ -132,17 +133,20 @@ class _DailyLogWidgetState extends State<DailyLogWidget> {
                   SizedBox(
                     height: 24,
                     width: 180.h,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        widget.completeDailyLog;
-                      },
-                      style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(const Color(0xFF695CD4)),
+                    child: Visibility(
+                      visible: widget.percentComplete == 100 ? false : true,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          widget.completeDailyLog;
+                        },
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(
+                              const Color(0xFF695CD4)),
+                        ),
+                        child: const Text("COMPLETE TODAY'S LOG",
+                            style: TextStyle(
+                                fontSize: 8.54, fontWeight: FontWeight.w600)),
                       ),
-                      child: const Text("COMPLETE TODAY'S LOG",
-                          style: TextStyle(
-                              fontSize: 8.54, fontWeight: FontWeight.w600)),
                     ),
                   ),
                 ],
@@ -186,197 +190,3 @@ class _DailyLogWidgetState extends State<DailyLogWidget> {
   }
 }
 
-class Medicine {
-  final String medicineName;
-  final String
-      quantity; // in ml if isTablet is false. if isTablet is true, quantity will be just a number
-
-  Medicine({required this.medicineName, required this.quantity});
-}
-
-class MedicineWidget extends StatefulWidget {
-  final bool
-      isWidgetActive; // true if the medicine is activitely pending and to be taken right next
-  final String timeForMedicineIntake;
-  List<Medicine> beforeMeal;
-  List<Medicine> afterMeal;
-  IconData? icon;
-
-  MedicineWidget(
-      {super.key,
-      required this.isWidgetActive,
-      required this.timeForMedicineIntake,
-      required this.beforeMeal,
-      required this.afterMeal}) {
-    if (timeForMedicineIntake == "Morning") {
-      icon = Icons.local_cafe;
-    } else if (timeForMedicineIntake == "Afternoon") {
-      icon = Icons.light_mode_outlined;
-    } else {
-      icon = Icons.dark_mode_outlined;
-    }
-  }
-
-  @override
-  State<MedicineWidget> createState() => _MedicineWidgetState();
-}
-
-class _MedicineWidgetState extends State<MedicineWidget> {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(right: 10),
-      height: 195,
-      width: 140,
-      decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border.all(
-            color: const Color(0xFFE0E0E0),
-            width: 1.0,
-          ),
-          borderRadius: const BorderRadius.all(Radius.circular(10))),
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
-              child: Row(
-                children: [
-                  const SizedBox(width: 5.0),
-                  Icon(
-                    widget.icon,
-                    size: 20,
-                    color: widget.isWidgetActive
-                        ? const Color(0xFF695CD4)
-                        : const Color(0xFFC5C4C8),
-                  ),
-                  const SizedBox(
-                    width: 15.0,
-                  ),
-                  Text(
-                    widget.timeForMedicineIntake,
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                      color: widget.isWidgetActive
-                          ? const Color(0xFF695CD4)
-                          : const Color(0xFFC5C4C8),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            widget.beforeMeal.isNotEmpty
-                ? Padding(
-                    padding: const EdgeInsets.fromLTRB(0.0, 16.0, 0.0, 0.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          "Before Food",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 12.0,
-                              color: Color(0xFFC5C4C8)),
-                        ),
-                        const SizedBox(height: 6),
-                        SizedBox(
-                          height: 36.0,
-                          child: ListView.builder(
-                              padding: EdgeInsets.zero,
-                              itemCount: widget.beforeMeal.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                return Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      widget.beforeMeal[index].medicineName,
-                                      style: TextStyle(
-                                        color: widget.isWidgetActive
-                                            ? const Color(0xFF3D3D3D)
-                                            : const Color(0xFFC5C4C8),
-                                        fontSize: 14.0,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                                    Text(
-                                      widget.beforeMeal[index].quantity,
-                                      style: TextStyle(
-                                        color: widget.isWidgetActive
-                                            ? const Color(0xFF3D3D3D)
-                                            : const Color(0xFFC5C4C8),
-                                        fontSize: 14.0,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    )
-                                  ],
-                                );
-                              }),
-                        ),
-                      ],
-                    ),
-                  )
-                : const SizedBox(height: 0),
-            widget.afterMeal.isNotEmpty
-                ? Padding(
-                    padding: const EdgeInsets.fromLTRB(0.0, 16.0, 0.0, 0.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          "After Food",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 12.0,
-                              color: Color(0xFFC5C4C8)),
-                        ),
-                        const SizedBox(height: 6),
-                        SizedBox(
-                          height: 36.0,
-                          child: ListView.builder(
-                              padding: EdgeInsets.zero,
-                              itemCount: widget.afterMeal.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                return Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      widget.afterMeal[index].medicineName,
-                                      style: TextStyle(
-                                        color: widget.isWidgetActive
-                                            ? const Color(0xFF3D3D3D)
-                                            : const Color(0xFFC5C4C8),
-                                        fontSize: 14.0,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                                    Text(
-                                      widget.afterMeal[index].quantity,
-                                      style: TextStyle(
-                                        color: widget.isWidgetActive
-                                            ? const Color(0xFF3D3D3D)
-                                            : const Color(0xFFC5C4C8),
-                                        fontSize: 14.0,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    )
-                                  ],
-                                );
-                              }),
-                        ),
-                      ],
-                    ),
-                  )
-                : const SizedBox(height: 0),
-          ],
-        ),
-      ),
-    );
-  }
-}

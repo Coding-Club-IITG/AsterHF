@@ -1,4 +1,5 @@
 
+import 'package:aster_hf/screens/home_screen.dart';
 import 'package:aster_hf/screens/splashscreen.dart';
 import 'package:aster_hf/screens/thankyou_screen.dart';
 import 'package:aster_hf/screens/user_data.dart';
@@ -30,11 +31,11 @@ class MyApp extends StatelessWidget {
           textTheme: GoogleFonts.poppinsTextTheme(),
           splashColor: const Color.fromRGBO(239, 224, 255, 1),
         ),
-        home: const SplashScreen(),
+        home: SplashScreen(),
         routes: {
           LoginScreen.routename: (context) => const LoginScreen(),
           SignupScreen.routename: (context) => const SignupScreen(),
-          UserData.routename:(context) =>  UserData(),
+          UserData.routename:(context) =>  Home(),
           ThankYouScreen.routename:(context) => const ThankYouScreen()
         },
       ),
