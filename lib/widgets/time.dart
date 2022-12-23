@@ -141,17 +141,17 @@ class _timeContainerState extends State<timeContainer> {
     );
   }
   String _time(TextEditingController h,TextEditingController m,String s){
-    if(h==null && m == null){
-      return '00-00-'+s;
+    if((h.text=='') && (m.text=='')){
+      return '00:00 '+s;
     }
-    else if(h==null){
-      return '00-'+m.text+'-'+s;
+    else if(h.text==''){
+      return '00:'+m.text+' '+s;
     }
-    else if(m==null){
-      return h.text+'-00-'+s;
+    else if(m.text==''){
+      return h.text+':00 '+s;
     }
     else{
-      return h.text+'-'+m.text+'-'+s;
+      return h.text+':'+m.text+' '+s;
     }
   }
 }
