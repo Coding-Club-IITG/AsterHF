@@ -1,4 +1,5 @@
 import 'package:aster_hf/controllers/email_auth.dart';
+import 'package:aster_hf/screens/home_screen.dart';
 import 'package:aster_hf/screens/splashscreen.dart';
 import 'package:aster_hf/screens/thankyou_screen.dart';
 import 'package:aster_hf/screens/user_data.dart';

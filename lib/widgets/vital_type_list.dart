@@ -13,4 +13,5 @@ Type will be passed as an integer to Vitals Widget on HomeScreen
 
 List <String> vitalTypeWordOne = ["Blood", "Body", "Glucose", "Heart", "Blood"];
 List <String> vitalTypeWordTwo = ["Pressure", "Weight", "Level", "Rate", "Oxygen"];
-List <String> vitalTypeUnits = ["mmHg", "Kgs", "mg/dl", "BPM", "SpO2"];
+List <String> vitalTypeUnits = ["mmHg","kg", "mg/dl", "bpm", "SpO2"];
+List <String> firebaseList = ['blood_pressure', 'body_weight','glucose_level', 'heart_rate','blood_oxygen'];

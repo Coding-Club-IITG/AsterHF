@@ -2,16 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:aster_hf/widgets/vital_type_list.dart';
+import 'package:aster_hf/controllers/is_progress_vitals.dart';
 
 class ActivityWidget extends StatefulWidget {
   final int vitalType;
   final String parameterValue;
-  final bool isProgress;
+  bool isProgress = true;
+
 
   ActivityWidget({
     required this.vitalType,
     required this.parameterValue,
-    required this.isProgress,
   });
 
   @override
@@ -20,7 +21,47 @@ class ActivityWidget extends StatefulWidget {
 
 class _ActivityWidgetState extends State<ActivityWidget> {
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    Future<void> asyncInitStateBloodPressure ()async {
+      String sysValue = widget.parameterValue.substring(0, widget.parameterValue.indexOf('/'));
+      String diaValue = widget.parameterValue.substring(widget.parameterValue.indexOf('/')+1);
+      // extraction of value of sys in reading of form sys/dia
+      if (await isProgressForWidgetBloodPressure(
+          Date, double.parse(sysValue), double.parse(diaValue))) {
+        setState(() {
+          widget.isProgress = true;
+        });
+      } else {
+        setState(() {
+          widget.isProgress = false;
+        });
+      }
+    };
+   Future<void> asyncInitState ()async {
+      if (await isProgressForWidget(
+          Date, firebaseList[widget.vitalType-1], double.parse(widget.parameterValue))) {
+        setState(() {
+          widget.isProgress = true;
+        });
+      } else {
+        setState(() {
+          widget.isProgress = false;
+        });
+      }
+    };
+
+   if(widget.vitalType == 1){
+     asyncInitStateBloodPressure();
+   }else {
+     asyncInitState();
+   }
+    // TODO: implement initState
+    super.initState();
+
+  }
+
+  @override
+  Widget build(BuildContext context)  {
     return Container(
       height: 135,
       width: 145,
@@ -35,7 +76,7 @@ class _ActivityWidgetState extends State<ActivityWidget> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(15.0, 29.0, 9.0, 0.0),
+            padding: const EdgeInsets.fromLTRB(15.0, 10.0, 9.0, 0.0),
             child: Text(
               '${vitalTypeWordOne[widget.vitalType - 1]}\n${vitalTypeWordTwo[widget.vitalType - 1]} ( ${vitalTypeUnits[widget.vitalType - 1]} )\n',
               maxLines: 2,
@@ -48,7 +89,7 @@ class _ActivityWidgetState extends State<ActivityWidget> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(15.0, 11.0, 41.0, 0.0),
+            padding: const EdgeInsets.fromLTRB(15.0, 7.0, 41.0, 0.0),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -56,7 +97,7 @@ class _ActivityWidgetState extends State<ActivityWidget> {
                   widget.parameterValue,
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
-                    color: widget.isProgress
+                    color:  widget.isProgress
                         ? const Color(0xFF39CA76)
                         : const Color(0xFFFD4747),
                     fontSize: 16.0,
@@ -65,7 +106,7 @@ class _ActivityWidgetState extends State<ActivityWidget> {
                 Expanded(
                   flex: 1,
                   child: Image.asset(
-                    widget.isProgress
+                     widget.isProgress
                         ? 'assets/home/progress.png'
                         : 'assets/home/regress.png',
                     height: 8.0,

@@ -9,7 +9,5 @@ class EmergencyContact {
 }
 
 EmergencyContact contactOne = EmergencyContact(contactName: "Dr. Raghunath Mahajan", contactSpeciality: "Cardiologist", contactNumber: "123456789");
-EmergencyContact contactTwo = EmergencyContact(contactName: "Ambulance", contactSpeciality: "Ambulance + First Aid", contactNumber: "123456789");
-
-
+EmergencyContact contactTwo = EmergencyContact(contactName: "Emergency Ambulance", contactSpeciality: "Ambulance + First Aid", contactNumber: "123456789");
 List <EmergencyContact> emergencyContacts= [contactOne, contactTwo];
