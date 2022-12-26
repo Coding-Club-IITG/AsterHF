@@ -23,7 +23,7 @@ class _formScreenState extends State<formScreen> {
   String valueFrequency = "Daily";
   String valueHowLong = "Days";
   var valueReminder = "5 minutes before";
-  var valueTime = "12-00-PM";
+  var valueTime = "12:00 PM";
   var duringMealList =['','Before Meal','During Meal','After Meal'];
   int duringMeal=2;
   TextEditingController valueHowLongInt = TextEditingController();
