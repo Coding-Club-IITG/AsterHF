@@ -3,6 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
+import 'category_sheet.dart';
+import 'export_bottomsheet.dart';
+
 class ProgressDetails extends StatefulWidget {
   final int index;
 
@@ -43,14 +46,35 @@ class _ProgressDetailsState extends State<ProgressDetails> {
         backgroundColor: Theme.of(context).primaryColor,
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              showModalBottomSheet(
+                context: context, builder: (context) => newExport(),
+                //backgroundColor: Colors.grey[500],
+                shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(20 ),
+                    )
+                ),
+                isScrollControlled: true,
+              );
+            },
             icon: Image.asset('assets/images/extract.png'),
           )
         ],
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Theme.of(context).primaryColor,
-        onPressed: () {},
+        onPressed: () {
+          showModalBottomSheet(
+              context: context, builder: (context) => CategoryBottomSheet(),
+              //backgroundColor: Colors.grey[500],
+              shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(20 ),
+                  )
+              )
+          );
+        },
         child: const Icon(Icons.add),
       ),
       body: SingleChildScrollView(
