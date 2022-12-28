@@ -80,7 +80,7 @@ class _formScreenState extends State<formScreen> {
     };
     try{await FirebaseFirestore.instance
       .collection('users')
-      .doc('priyanshusrivastava42@gmail.com')
+      .doc('mauryakk2004@gmail.com')
       .collection('Reminder')
       .doc(medicineNameController.text)
       .set(data);
