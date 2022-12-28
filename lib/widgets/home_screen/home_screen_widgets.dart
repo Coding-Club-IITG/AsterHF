@@ -1,5 +1,9 @@
+import 'package:aster_hf/controllers/user_data_controller.dart';
+import 'package:aster_hf/main.dart';
+import 'package:aster_hf/screens/user_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:aster_hf/widgets/vital_type_list.dart';
 import 'package:aster_hf/controllers/is_progress_vitals.dart';
@@ -9,8 +13,8 @@ class ActivityWidget extends StatefulWidget {
   final String parameterValue;
   bool isProgress = true;
 
-
   ActivityWidget({
+    super.key,
     required this.vitalType,
     required this.parameterValue,
   });
@@ -22,12 +26,14 @@ class ActivityWidget extends StatefulWidget {
 class _ActivityWidgetState extends State<ActivityWidget> {
   @override
   void initState() {
-    Future<void> asyncInitStateBloodPressure ()async {
-      String sysValue = widget.parameterValue.substring(0, widget.parameterValue.indexOf('/'));
-      String diaValue = widget.parameterValue.substring(widget.parameterValue.indexOf('/')+1);
+    Future<void> asyncInitStateBloodPressure() async {
+      String sysValue = widget.parameterValue
+          .substring(0, widget.parameterValue.indexOf('/'));
+      String diaValue = widget.parameterValue
+          .substring(widget.parameterValue.indexOf('/') + 1);
       // extraction of value of sys in reading of form sys/dia
       if (await isProgressForWidgetBloodPressure(
-          Date, double.parse(sysValue), double.parse(diaValue))) {
+          date, double.parse(sysValue), double.parse(diaValue))) {
         setState(() {
           widget.isProgress = true;
         });
@@ -36,32 +42,35 @@ class _ActivityWidgetState extends State<ActivityWidget> {
           widget.isProgress = false;
         });
       }
-    };
-   Future<void> asyncInitState ()async {
-      if (await isProgressForWidget(
-          Date, firebaseList[widget.vitalType-1], double.parse(widget.parameterValue))) {
-        setState(() {
-          widget.isProgress = true;
-        });
-      } else {
-        setState(() {
-          widget.isProgress = false;
-        });
-      }
-    };
+    }
 
-   if(widget.vitalType == 1){
-     asyncInitStateBloodPressure();
-   }else {
-     asyncInitState();
-   }
-    // TODO: implement initState
+    
+    Future<void> asyncInitState() async {
+      if (await isProgressForWidget(date, firebaseList[widget.vitalType - 1],
+          double.parse(widget.parameterValue))) {
+        setState(() {
+          widget.isProgress = true;
+        });
+      } else {
+        setState(() {
+          widget.isProgress = false;
+        });
+      }
+    }
+
+  
+
+    if (widget.vitalType == 1) {
+      asyncInitStateBloodPressure();
+    } else {
+      asyncInitState();
+    }
+
     super.initState();
-
   }
 
   @override
-  Widget build(BuildContext context)  {
+  Widget build(BuildContext context) {
     return Container(
       height: 135,
       width: 145,
@@ -97,7 +106,7 @@ class _ActivityWidgetState extends State<ActivityWidget> {
                   widget.parameterValue,
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
-                    color:  widget.isProgress
+                    color: widget.isProgress
                         ? const Color(0xFF39CA76)
                         : const Color(0xFFFD4747),
                     fontSize: 16.0,
@@ -106,7 +115,7 @@ class _ActivityWidgetState extends State<ActivityWidget> {
                 Expanded(
                   flex: 1,
                   child: Image.asset(
-                     widget.isProgress
+                    widget.isProgress
                         ? 'assets/home/progress.png'
                         : 'assets/home/regress.png',
                     height: 8.0,
@@ -124,12 +133,11 @@ class _ActivityWidgetState extends State<ActivityWidget> {
 
 class DailyLogWidget extends StatefulWidget {
   final int percentComplete;
-  Function completeDailyLog;
 
-  DailyLogWidget(
-      {super.key,
-      required this.percentComplete,
-      required this.completeDailyLog});
+  const DailyLogWidget({
+    super.key,
+    required this.percentComplete,
+  });
 
   @override
   State<DailyLogWidget> createState() => _DailyLogWidgetState();
@@ -177,8 +185,18 @@ class _DailyLogWidgetState extends State<DailyLogWidget> {
                     child: Visibility(
                       visible: widget.percentComplete == 100 ? false : true,
                       child: ElevatedButton(
-                        onPressed: () {
-                          widget.completeDailyLog;
+                        onPressed: () async {
+                          final screen =
+                              await UserDataController.getNextScreen();
+                          final page = screen['page'];
+                          final progress = screen['progress'];
+
+                          Navigator.pushReplacement(
+                              navigatorKey.currentContext!,
+                              PageTransition(
+                                  child:
+                                      UserData(page: page, progress: progress,isPoppable: false,),
+                                  type: PageTransitionType.fade));
                         },
                         style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all(
@@ -230,4 +248,3 @@ class _DailyLogWidgetState extends State<DailyLogWidget> {
     );
   }
 }
-

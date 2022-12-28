@@ -202,9 +202,10 @@ class EmailAuth extends ChangeNotifier {
         showSnackBar('You\'ve successfully logged in!');
         Navigator.of(navigatorKey.currentContext!).pushReplacement(
           PageTransition(
-              child:  UserData(
+              child:  const UserData(
                 page: 'blood_pressure',
                 progress: 20,
+                isPoppable: false,
               ),
               type: PageTransitionType.fade),
         );
@@ -274,9 +275,10 @@ class EmailAuth extends ChangeNotifier {
 
             Navigator.of(navigatorKey.currentContext!).pushReplacement(
               PageTransition(
-                  child:  UserData(
+                  child:  const UserData(
                     page: 'blood_pressure',
                     progress: 20,
+                    isPoppable: false,
                   ),
                   type: PageTransitionType.fade),
             );

@@ -1,4 +1,4 @@
-import 'package:aster_hf/controllers/user_data.dart';
+import 'package:aster_hf/controllers/user_data_controller.dart';
 import 'package:aster_hf/main.dart';
 import 'package:aster_hf/screens/thankyou_screen.dart';
 import 'package:aster_hf/widgets/user_data_box.dart';
@@ -14,12 +14,13 @@ class UserData extends StatelessWidget {
 
   final String page;
   final int progress;
+  final bool isPoppable;
 
-  UserData({super.key, required this.page, required this.progress});
+  const UserData({super.key, required this.page, required this.progress,required this.isPoppable});
 
   String _getTitle(String page) {
     String abc = 'Error';
-    print('hello $page');
+
     switch (page) {
       case 'blood_pressure':
         abc = 'Enter your Blood\nPressure';
@@ -204,14 +205,17 @@ class UserData extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        leading: IconButton(
-          iconSize: 21,
-          splashRadius: 22,
-          onPressed:
-              (page != 'blood_pressure') ? Navigator.of(context).pop : null,
-          icon: Icon(
-            Icons.arrow_back_ios_new_outlined,
-            color: (page != 'blood_pressure') ? Colors.black : Colors.white,
+        leading: Visibility(
+          visible: isPoppable,
+          child: IconButton(
+        
+            iconSize: 21,
+            splashRadius: 22,
+            onPressed: Navigator.of(context).pop,
+            icon: const Icon(
+              Icons.arrow_back_ios_new_outlined,
+              color: Colors.black,
+            ),
           ),
         ),
       ),
@@ -244,64 +248,85 @@ class UserData extends StatelessWidget {
                 onTap: () async {
                   final prefs = await SharedPreferences.getInstance();
                   String page1 = '';
-                  print(page);
+          
 
-                  switch (page) {
-                    case 'blood_pressure':
+                  bool isWeightSkipped =
+                      prefs.getBool('isWeightSkipped') ?? true;
+                  bool isGlucoseSkipped =
+                      prefs.getBool('isGlucoseSkipped') ?? true;
+                  bool isHeartSkipped = prefs.getBool('isHeartSkipped') ?? true;
+                  bool isOxygenSkipped =
+                      prefs.getBool('isOxygenSkipped') ?? true;
+
+                  if (page == 'blood_pressure') {
+                    prefs.setBool('isBpSkipped', false);
+                    if (isWeightSkipped) {
                       page1 = 'body_weight';
-
-                      prefs.setBool('isBpSkipped', false);
-                      break;
-
-                    case 'body_weight':
+                    } else if (isGlucoseSkipped) {
                       page1 = 'glucose_level';
-
-                      prefs.setBool('isWeightSkipped', false);
-
-                      break;
-
-                    case 'glucose_level':
+                    } else if (isHeartSkipped) {
                       page1 = 'heart_rate';
-                      prefs.setBool('isGlucoseSkipped', false);
-
-                      break;
-
-                    case 'heart_rate':
+                    } else if (isOxygenSkipped) {
                       page1 = 'blood_oxygen';
-                      prefs.setBool('isHeartSkipped', false);
-                      break;
-                    case 'blood_oxygen':
-                      page1 = 'home_screen';
-                      prefs.setBool('isOxygenSkipped', false);
-                      break;
-
-                    default:
+                    } else {
+                      page1 = 'thanks_screen';
+                    }
+                  } else if (page == 'body_weight') {
+                    prefs.setBool('isWeightSkipped', false);
+                    if (isGlucoseSkipped) {
+                      page1 = 'glucose_level';
+                    } else if (isHeartSkipped) {
+                      page1 = 'heart_rate';
+                    } else if (isOxygenSkipped) {
+                      page1 = 'blood_oxygen';
+                    } else {
+                      page1 = 'thanks_screen';
+                    }
+                  } else if (page == 'glucose_level') {
+                    prefs.setBool('isGlucoseSkipped', false);
+                    if (isHeartSkipped) {
+                      page1 = 'heart_rate';
+                    } else if (isOxygenSkipped) {
+                      page1 = 'blood_oxygen';
+                    } else {
+                      page1 = 'thanks_screen';
+                    }
+                  } else if (page == 'heart_rate') {
+                    prefs.setBool('isHeartSkipped', false);
+                    if (isOxygenSkipped) {
+                      page1 = 'blood_oxygen';
+                    } else {
+                      page1 = 'thanks_screen';
+                    }
+                  } else if (page == 'blood_oxygen') {
+                    prefs.setBool('isOxygenSkipped', false);
+                    page1 = 'thanks_screen';
                   }
-                  print('page1  == $page1');
-                  final data = await UserDataController.getNextScreen();
 
-                  final progress1 = data['progress'];
-                  if (page1 == 'home_screen' || progress1 == 100) {
+         
+
+                  final progress1 = await UserDataController.getProgress();
+                  if (page1 == 'thanks_screen' || progress1 == 100) {
                     Navigator.of(navigatorKey.currentContext!).push(
                         PageTransition(
                             child: const ThankYouScreen(),
                             type: PageTransitionType.fade));
-                  } else  {
+                  } else {
                     Navigator.of(navigatorKey.currentContext!).push(
                         PageTransition(
-                            child: UserData(page: page1, progress: progress1),
+                            child: UserData(page: page1, progress: progress1,isPoppable: true,),
                             type: PageTransitionType.fade));
                   }
                 },
                 child: SvgPicture.asset('assets/home/arrow.svg', height: 75),
               ),
               CircularStepProgressIndicator(
-                totalSteps: 120,
+                totalSteps: 100,
                 currentStep: progress,
                 selectedColor: const Color.fromRGBO(105, 92, 212, 1),
                 unselectedColor: Colors.white,
-                width: 123,
-                height: 123,
+                width: 123.h,
+                height: 123.h,
                 selectedStepSize: 6,
                 roundedCap: (_, __) => true,
               ),
@@ -321,44 +346,62 @@ class UserData extends StatelessWidget {
               ),
               onPressed: () async {
                 final prefs = await SharedPreferences.getInstance();
-                print(page);
+   
+
+                bool isWeightSkipped = prefs.getBool('isWeightSkipped') ?? true;
+                bool isGlucoseSkipped =
+                    prefs.getBool('isGlucoseSkipped') ?? true;
+                bool isHeartSkipped = prefs.getBool('isHeartSkipped') ?? true;
+                bool isOxygenSkipped = prefs.getBool('isOxygenSkipped') ?? true;
 
                 var page1 = '';
-
-                switch (page) {
-                  case 'blood_pressure':
+                if (page == 'blood_pressure') {
+                  prefs.setBool('isBpSkipped', true);
+                  if (isWeightSkipped) {
                     page1 = 'body_weight';
-                    prefs.setBool('isBpSkipped', true);
-                    break;
-
-                  case 'body_weight':
+                  } else if (isGlucoseSkipped) {
                     page1 = 'glucose_level';
-                    prefs.setBool('isWeightSkipped', true);
-
-                    break;
-
-                  case 'glucose_level':
+                  } else if (isHeartSkipped) {
                     page1 = 'heart_rate';
-                    prefs.setBool('isGlucoseSkipped', true);
-
-                    break;
-
-                  case 'heart_rate':
+                  } else if (isOxygenSkipped) {
                     page1 = 'blood_oxygen';
-                    prefs.setBool('isHeartSkipped', true);
-                    break;
-
-                  case 'blood_oxygen':
-                    page1 = '';
-                    prefs.setBool('isOxygenSkipped', true);
-                    break;
-
-                  default:
+                  } else {
+                    page1 = 'thanks_screen';
+                  }
+                } else if (page == 'body_weight') {
+                  prefs.setBool('isWeightSkipped', true);
+                  if (isGlucoseSkipped) {
+                    page1 = 'glucose_level';
+                  } else if (isHeartSkipped) {
+                    page1 = 'heart_rate';
+                  } else if (isOxygenSkipped) {
+                    page1 = 'blood_oxygen';
+                  } else {
+                    page1 = 'thanks_screen';
+                  }
+                } else if (page == 'glucose_level') {
+                  prefs.setBool('isGlucoseSkipped', true);
+                  if (isHeartSkipped) {
+                    page1 = 'heart_rate';
+                  } else if (isOxygenSkipped) {
+                    page1 = 'blood_oxygen';
+                  } else {
+                    page1 = 'thanks_screen';
+                  }
+                } else if (page == 'heart_rate') {
+                  prefs.setBool('isHeartSkipped', true);
+                  if (isOxygenSkipped) {
+                    page1 = 'blood_oxygen';
+                  } else {
+                    page1 = 'thanks_screen';
+                  }
+                } else if (page == 'blood_oxygen') {
+                  prefs.setBool('isOxygenSkipped', true);
+                  page1 = 'thanks_screen';
                 }
-                final data = await UserDataController.getNextScreen();
 
-                final progress1 = data['progress'];
-                if (page1 == '') {
+                final progress1 = await UserDataController.getProgress();
+                if (page1 == 'thanks_screen') {
                   Navigator.of(navigatorKey.currentContext!).push(
                       PageTransition(
                           child: const ThankYouScreen(),
@@ -366,7 +409,7 @@ class UserData extends StatelessWidget {
                 } else {
                   Navigator.of(navigatorKey.currentContext!).push(
                       PageTransition(
-                          child: UserData(page: page1, progress: progress1),
+                          child: UserData(page: page1, progress: progress1,isPoppable: false,),
                           type: PageTransitionType.fade));
                 }
               },

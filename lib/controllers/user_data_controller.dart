@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserDataController with ChangeNotifier {
- static Future<Map<String,dynamic>> getNextScreen() async {
+  static Future<Map<String, dynamic>> getNextScreen() async {
     final prefs = await SharedPreferences.getInstance();
 
     String date = DateTime.now().toIso8601String();
@@ -49,6 +49,16 @@ class UserDataController with ChangeNotifier {
     progress += isWeightSkipped ? 0 : 20;
     progress += isGlucoseSkipped ? 0 : 20;
 
-    return {'page':abc,'progress':progress};
+    return {'page': abc, 'progress': progress};
+  }
+
+  static Future<int> getProgress() async {
+    final abc = await getNextScreen();
+
+    final int abci = abc['progress'];
+
+
+
+    return abci;
   }
 }

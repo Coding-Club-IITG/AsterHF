@@ -1,7 +1,10 @@
+import 'package:aster_hf/main.dart';
+import 'package:aster_hf/screens/home_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../widgets/button.dart';
 
@@ -142,15 +145,22 @@ class ThankYouScreen extends StatelessWidget {
                       .doc(date)
                       .set({
                     if (!isOxygenSkipped) 'blood_oxygen': oxygen,
-                    if (!isBpSkipped)'blood_pressure': {
-                      'Dia': bpDia,
-                      'Sys': bpSys,
-                    },
-                    if(!isWeightSkipped)'body_weight': weight,
-                    if(!isGlucoseSkipped)'glucose_level': glucose,
-                    if(!isHeartSkipped)'heartRate': heartRate
+                    if (!isBpSkipped)
+                      'blood_pressure': {
+                        'Dia': bpDia,
+                        'Sys': bpSys,
+                      },
+                    if (!isWeightSkipped) 'body_weight': weight,
+                    if (!isGlucoseSkipped) 'glucose_level': glucose,
+                    if (!isHeartSkipped) 'heartRate': heartRate
                   });
+
+                  Navigator.pushReplacement(
+                      navigatorKey.currentContext!,
+                      PageTransition(
+                          child: const Home(), type: PageTransitionType.fade));
                 } on FirebaseAuthException catch (error) {
+                  print(error);
                   //HANDLE ERROR HERE
 
                 } catch (err) {
@@ -168,6 +178,6 @@ class ThankYouScreen extends StatelessWidget {
         ],
       ),
     );
-    ;
+    
   }
 }

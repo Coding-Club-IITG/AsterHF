@@ -1,7 +1,7 @@
 import 'package:aster_hf/controllers/auth.dart';
-
-import 'package:aster_hf/screens/splashscreen.dart';
+import 'package:aster_hf/screens/form_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import './screens/splashscreen.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -41,6 +41,7 @@ class MyApp extends StatelessWidget {
               splashColor: const Color.fromRGBO(239, 224, 255, 1),
             ),
 
+            
             home: StreamBuilder(
               stream: FirebaseAuth.instance.authStateChanges(),
               builder: (context, snapshot) => snapshot.hasData

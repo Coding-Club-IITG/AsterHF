@@ -31,7 +31,7 @@ class _CategoryBottomSheetState extends State<CategoryBottomSheet> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.fromLTRB(35, 0, 34, 0),
+      padding: const EdgeInsets.fromLTRB(35, 0, 34, 0),
 
       decoration: const BoxDecoration(
         borderRadius: BorderRadius.only(topLeft: Radius.circular(20.0), topRight: Radius.circular(20.0)),
@@ -99,7 +99,7 @@ class _CategoryBottomSheetState extends State<CategoryBottomSheet> {
                         children: [
                           ImageIcon(
                             AssetImage('assets/images/categoryIcon$index.png'),
-                            color:Color(0xff695CD4),
+                            color:const Color(0xff695CD4),
                             size: 38,
                           ),
                           // const SizedBox(
@@ -107,7 +107,7 @@ class _CategoryBottomSheetState extends State<CategoryBottomSheet> {
                           // ),
                           Text(
                             categoryList[index],
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontFamily: 'poppins',
                               fontSize: 14,
                               color:Colors.white,
@@ -124,7 +124,7 @@ class _CategoryBottomSheetState extends State<CategoryBottomSheet> {
                         padding: const EdgeInsets.fromLTRB(0, 14.5, 0, 10),
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
-                          color: (category_index==index) ? Color(0xff695CD4):Color.fromARGB(1, 255, 255, 255),
+                          color: (category_index==index) ? const Color(0xff695CD4):const Color.fromARGB(1, 255, 255, 255),
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(
                             color: Colors.grey,
@@ -150,7 +150,7 @@ class _CategoryBottomSheetState extends State<CategoryBottomSheet> {
                               style: TextStyle(
                                 fontFamily: 'poppins',
                                 fontSize: 14,
-                                color:(category_index==index) ? Colors.white:Color(0xff695CD4),
+                                color:(category_index==index) ? Colors.white:const Color(0xff695CD4),
                               ),
                             ),
                           ],
@@ -197,7 +197,7 @@ class _CategoryBottomSheetState extends State<CategoryBottomSheet> {
 
         ],
       ),
-    );;
+    );
   }
 
   Future<Map?> get_info(String date) async {

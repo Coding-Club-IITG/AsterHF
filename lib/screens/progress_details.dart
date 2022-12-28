@@ -391,7 +391,7 @@ class _ProgressDetailsState extends State<ProgressDetails> {
                                     text: healthy[widget.index],
                                     style: TextStyle(
                                         fontFamily: 'poppins',
-                                        color: Color(0xff39CA76),
+                                        color: const Color(0xff39CA76),
                                         fontSize: widget.index == 0
                                           ? 12
                                           : 14,
@@ -465,7 +465,7 @@ class _ProgressDetailsState extends State<ProgressDetails> {
       for(var i = 6; i>=0; i--){
         DateTime today = DateTime.now();
         DateTime req = today.subtract(Duration(days: i));
-        print(req.toIso8601String().substring(0, 10));
+
         Map? a = await get_info(req.toIso8601String().substring(0, 10));
         dayData.add(ChartData(week[req.weekday-1], a![vital[index]]));
       }
@@ -499,7 +499,7 @@ class _ProgressDetailsState extends State<ProgressDetails> {
       for(var i = 6; i>=0; i--){
         DateTime today = DateTime.now();
         DateTime req = today.subtract(Duration(days: i));
-        print(req.toIso8601String().substring(0, 10));
+
         Map? a = await get_info(req.toIso8601String().substring(0, 10));
         double data = a!['body_weight'].toDouble();
         dayData.add(ChartBWData(week[req.weekday-1], data));
@@ -623,7 +623,7 @@ class BPChart extends StatelessWidget {
 
 class BWChart extends StatelessWidget {
   final chartData;
-  BWChart({super.key, this.chartData});
+  const BWChart({super.key, this.chartData});
 
   @override
   Widget build(BuildContext context) {
