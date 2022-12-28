@@ -172,6 +172,7 @@ class TimeContainerState extends State<TimeContainer> {
               width: 4,
             ),
             Container(
+            
               height: widget.height,
               width: 50,
               decoration: BoxDecoration(
@@ -287,7 +288,7 @@ class _dropdownWithHeadingState extends State<DropdownWithHeading> {
                 color: Color(0xff8C8E97),
               ),
               borderRadius: BorderRadius.circular(9)),
-          child: getText(
+          child: GetText(
               items: widget.items,
               nameController: widget.nameController,
               callbackFunction: widget.callbackFunction),
@@ -297,13 +298,13 @@ class _dropdownWithHeadingState extends State<DropdownWithHeading> {
   }
 }
 
-class getText extends StatefulWidget {
+class GetText extends StatefulWidget {
   final List<String> items;
   final String? nameController;
   final Function callbackFunction;
   final bool? show;
 
-  const getText({
+  const GetText({
     Key? key,
     required this.items,
     required this.nameController,
@@ -312,10 +313,10 @@ class getText extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<getText> createState() => _getTextState();
+  State<GetText> createState() => _getTextState();
 }
 
-class _getTextState extends State<getText> {
+class _getTextState extends State<GetText> {
   @override
   Widget build(BuildContext context) {
     return DropdownButtonHideUnderline(
