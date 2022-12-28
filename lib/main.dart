@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
               textTheme: GoogleFonts.poppinsTextTheme(),
               splashColor: const Color.fromRGBO(239, 224, 255, 1),
             ),
-       
+
             home: StreamBuilder(
               stream: FirebaseAuth.instance.authStateChanges(),
               builder: (context, snapshot) => snapshot.hasData

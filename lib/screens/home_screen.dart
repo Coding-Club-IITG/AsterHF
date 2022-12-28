@@ -159,46 +159,50 @@ class _HomeState extends State<Home> {
                           const SizedBox(
                             height: 15,
                           ),
-                          FutureBuilder<Object>(
+                          FutureBuilder <Object>(
                               future: FirebaseFirestore.instance
                                   .collection("users")
                                   .doc("s.r.ghosarwadkar@gmail.com")
                                   .collection("Vitals")
-                                  .doc('23-12-2022')
+                                  .doc('26-12-2022')
                                   .get(),
-                              builder: (context, AsyncSnapshot snapshot) {
+                              builder: (context, AsyncSnapshot  snapshot)  {
                                 int countOfVitals = 0;
-                                if (snapshot.hasError) {
-                                  return Text('Something went wrong');
-                                }
-                                if (snapshot.connectionState ==
-                                    ConnectionState.waiting) {
-                                  return CircularProgressIndicator();
-                                }
-                                if (snapshot.data!
-                                    .data()!
-                                    .containsKey('blood_oxygen')) {
-                                  countOfVitals++;
-                                }
-                                if (snapshot.data!
-                                    .data()!
-                                    .containsKey('body_weight')) {
-                                  countOfVitals++;
-                                }
-                                if (snapshot.data!
-                                    .data()!
-                                    .containsKey('blood_pressure')) {
-                                  countOfVitals++;
-                                }
-                                if (snapshot.data!
-                                    .data()!
-                                    .containsKey('glucose_level')) {
-                                  countOfVitals++;
-                                }
-                                if (snapshot.data!
-                                    .data()!
-                                    .containsKey('heart_rate')) {
-                                  countOfVitals++;
+                                if (!snapshot.hasData) {
+                                  countOfVitals = 0;
+                                } else {
+                                  if (snapshot.hasError) {
+                                    return Text('Something went wrong');
+                                  }
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return CircularProgressIndicator();
+                                  }
+                                  if (snapshot.data!
+                                      .data()!
+                                      .containsKey('blood_oxygen')) {
+                                    countOfVitals++;
+                                  }
+                                  if (snapshot.data!
+                                      .data()!
+                                      .containsKey('body_weight')) {
+                                    countOfVitals++;
+                                  }
+                                  if (snapshot.data!
+                                      .data()!
+                                      .containsKey('blood_pressure')) {
+                                    countOfVitals++;
+                                  }
+                                  if (snapshot.data!
+                                      .data()!
+                                      .containsKey('glucose_level')) {
+                                    countOfVitals++;
+                                  }
+                                  if (snapshot.data!
+                                      .data()!
+                                      .containsKey('heart_rate')) {
+                                    countOfVitals++;
+                                  }
                                 }
                                 return DailyLogWidget(
                                     percentComplete:
@@ -242,10 +246,13 @@ class _HomeState extends State<Home> {
                           .collection("users")
                           .doc("s.r.ghosarwadkar@gmail.com")
                           .collection("Vitals")
-                          .doc('23-12-2022')
+                          .doc('26-12-2022')
                           .get(),
                       builder: (BuildContext context, AsyncSnapshot snapshot) {
                         List<Widget> toShow = [];
+                        if (!snapshot.hasData || snapshot.data == null) {
+                          return SizedBox(height: 135);
+                        }
                         if (snapshot.hasError) {
                           return Text('Something went wrong');
                         }
@@ -266,7 +273,7 @@ class _HomeState extends State<Home> {
                                 vitalType: 5,
                                 parameterValue:
                                     snapshot.data['blood_oxygen'].toString(),
-                                isProgress: true),
+                               ),
                           ));
                         }
                         if (snapshot.data!.data()!.containsKey('body_weight')) {
@@ -280,7 +287,7 @@ class _HomeState extends State<Home> {
                                 vitalType: 2,
                                 parameterValue:
                                     snapshot.data['body_weight'].toString(),
-                                isProgress: true),
+                                ),
                           ));
                         }
                         if (snapshot.data!
@@ -295,8 +302,8 @@ class _HomeState extends State<Home> {
                             child: ActivityWidget(
                                 vitalType: 1,
                                 parameterValue:
-                                    "${snapshot.data['blood_oxygen']['Sys']}/${snapshot.data['blood_oxygen']['Dia']}",
-                                isProgress: true),
+                                    "${snapshot.data['blood_pressure']['Sys']}/${snapshot.data['blood_pressure']['Dia']}",
+                                ),
                           ));
                         }
                         if (snapshot.data!
@@ -312,7 +319,7 @@ class _HomeState extends State<Home> {
                                 vitalType: 3,
                                 parameterValue:
                                     "${snapshot.data['glucose_level']}",
-                                isProgress: true),
+                                ),
                           ));
                         }
                         if (snapshot.data!.data()!.containsKey('heart_rate')) {
@@ -326,7 +333,7 @@ class _HomeState extends State<Home> {
                                 vitalType: 4,
                                 parameterValue:
                                     "${snapshot.data['heart_rate']}",
-                                isProgress: true),
+                                ),
                           ));
                         }
                         return ListView(
@@ -337,7 +344,7 @@ class _HomeState extends State<Home> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Row(
-                  children:[
+                  children: [
                     const Text(
                       "Medicine Reminders",
                       style:
@@ -379,7 +386,7 @@ class _HomeState extends State<Home> {
                         int currReminder, currReminderTime;
                         List<List<List<Medicine>>> reminder = [
                           morningReminder,
-                           afternoonReminder,
+                          afternoonReminder,
                           eveningReminder
                         ];
                         List<List<DateTime>> reminderTime = [
@@ -506,7 +513,7 @@ class _HomeState extends State<Home> {
                                                       return Container(
                                                           color:
                                                               Color(0xFFFFFFFF),
-                                                          height: 48,
+                                                          height: 60,
                                                           child: Row(
                                                             crossAxisAlignment:
                                                                 CrossAxisAlignment
@@ -515,16 +522,17 @@ class _HomeState extends State<Home> {
                                                               Image.asset(
                                                                 emergencyContacts[index]
                                                                             .contactName ==
-                                                                        "Ambulance"
+                                                                        "Emergency Ambulance"
                                                                     ? 'assets/images/ambulance_logo.png'
                                                                     : 'assets/images/doctor_logo.png',
-                                                                height: 20,
-                                                                width: 20,
+                                                                height: 25,
+                                                                width: 25,
                                                               ),
                                                               SizedBox(
                                                                 width: 27,
                                                               ),
                                                               Column(
+                                                                mainAxisAlignment: MainAxisAlignment.center,
                                                                 crossAxisAlignment:
                                                                     CrossAxisAlignment
                                                                         .start,
