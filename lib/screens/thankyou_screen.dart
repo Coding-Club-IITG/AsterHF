@@ -138,22 +138,26 @@ class ThankYouScreen extends StatelessWidget {
                   bool isOxygenSkipped =
                       prefs.getBool('isOxygenSkipped') ?? true;
 
+
                   await FirebaseFirestore.instance
                       .collection('users')
                       .doc(email)
                       .collection('Vitals')
                       .doc(date)
                       .set({
-                    if (!isOxygenSkipped) 'blood_oxygen': oxygen,
+                    if (!isOxygenSkipped && oxygen != 0) 'blood_oxygen': oxygen,
                     if (!isBpSkipped)
-                      'blood_pressure': {
-                        'Dia': bpDia,
-                        'Sys': bpSys,
-                      },
-                    if (!isWeightSkipped) 'body_weight': weight,
-                    if (!isGlucoseSkipped) 'glucose_level': glucose,
-                    if (!isHeartSkipped) 'heartRate': heartRate
-                  });
+                      if (bpDia != 0 && bpSys != 0)
+                        'blood_pressure': {
+                          'Dia': bpDia,
+                          'Sys': bpSys,
+                        },
+                    if (!isWeightSkipped && weight != 0) 'body_weight': weight,
+                    if (!isGlucoseSkipped && glucose != 0)
+                      'glucose_level': glucose,
+                    if (!isHeartSkipped && heartRate != 0)
+                      'heartRate': heartRate
+                  },SetOptions(merge: true));
 
                   Navigator.pushReplacement(
                       navigatorKey.currentContext!,
@@ -164,6 +168,7 @@ class ThankYouScreen extends StatelessWidget {
                   //HANDLE ERROR HERE
 
                 } catch (err) {
+                  print(err);
                   // HANDLE ERROR HERE
                 }
               },
@@ -178,6 +183,5 @@ class ThankYouScreen extends StatelessWidget {
         ],
       ),
     );
-    
   }
 }

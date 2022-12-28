@@ -2,6 +2,8 @@ import 'package:aster_hf/main.dart';
 import 'package:aster_hf/screens/first_screen.dart';
 import 'package:aster_hf/screens/home_screen.dart';
 import 'package:aster_hf/screens/user_data.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:page_transition/page_transition.dart';
@@ -29,6 +31,8 @@ class _SplashScreenState extends State<SplashScreen> {
     prefs.clear();
     //TODO: remove this line , inserted only for testing
 
+
+
     await Future.delayed(const Duration(seconds: 2), () {});
     if (!mounted) return;
 
@@ -47,7 +51,7 @@ class _SplashScreenState extends State<SplashScreen> {
         Navigator.pushReplacement(
             navigatorKey.currentContext!,
             PageTransition(
-                child:  UserData(
+                child: UserData(
                   progress: data['progress'],
                   page: data['page'],
                   isPoppable: false,
