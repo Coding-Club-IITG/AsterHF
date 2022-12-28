@@ -1,4 +1,4 @@
-import 'package:aster_hf/controllers/email_auth.dart';
+import 'package:aster_hf/controllers/auth.dart';
 import 'package:aster_hf/widgets/auth_widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -6,7 +6,6 @@ import '../widgets/button.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../controllers/google_auth.dart';
 
 class SignupScreen extends StatelessWidget {
   static const routename = '/signup';
@@ -116,8 +115,8 @@ class SignupScreen extends StatelessWidget {
                               height: 18.h,
                               width: 18.w,
                               child: Checkbox(
-                                  side: BorderSide(
-                                      width: 2, color: value.colori),
+                                  side:
+                                      BorderSide(width: 2, color: value.colori),
                                   value: value.isChecked,
                                   activeColor: Colors.transparent,
                                   checkColor:
@@ -200,8 +199,8 @@ class SignupScreen extends StatelessWidget {
                               ),
                             ),
                           ),
-                          onPressed: () {
-                            Auth.googleSignIn(context);
+                          onPressed: () async {
+                            await emailAuth.googleSignIn();
                           },
                           child: SizedBox(
                             height: 60.h,
