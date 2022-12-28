@@ -113,14 +113,16 @@ class _MedicineWidgetState extends State<MedicineWidget> {
                                   mainAxisAlignment:
                                   MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text(
-                                      widget.beforeMeal[index].medicineName,
-                                      style: TextStyle(
-                                        color: widget.isWidgetActive
-                                            ? const Color(0xFF3D3D3D)
-                                            : const Color(0xFFC5C4C8),
-                                        fontSize: 14.0,
-                                        fontWeight: FontWeight.w400,
+                                    Expanded(
+                                      child: Text(
+                                        widget.beforeMeal[index].medicineName,
+                                        style: TextStyle(
+                                          color: widget.isWidgetActive
+                                              ? const Color(0xFF3D3D3D)
+                                              : const Color(0xFFC5C4C8),
+                                          fontSize: 14.0,
+                                          fontWeight: FontWeight.w400,
+                                        ),
                                       ),
                                     ),
                                     Text(
@@ -165,14 +167,16 @@ class _MedicineWidgetState extends State<MedicineWidget> {
                                   mainAxisAlignment:
                                   MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text(
-                                      widget.duringMeal[index].medicineName,
-                                      style: TextStyle(
-                                        color: widget.isWidgetActive
-                                            ? const Color(0xFF3D3D3D)
-                                            : const Color(0xFFC5C4C8),
-                                        fontSize: 14.0,
-                                        fontWeight: FontWeight.w400,
+                                    Expanded(
+                                      child: Text(
+                                        widget.duringMeal[index].medicineName,
+                                        style: TextStyle(
+                                          color: widget.isWidgetActive
+                                              ? const Color(0xFF3D3D3D)
+                                              : const Color(0xFFC5C4C8),
+                                          fontSize: 14.0,
+                                          fontWeight: FontWeight.w400,
+                                        ),
                                       ),
                                     ),
                                     Text(
@@ -217,14 +221,16 @@ class _MedicineWidgetState extends State<MedicineWidget> {
                                   mainAxisAlignment:
                                   MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text(
-                                      widget.afterMeal[index].medicineName,
-                                      style: TextStyle(
-                                        color: widget.isWidgetActive
-                                            ? const Color(0xFF3D3D3D)
-                                            : const Color(0xFFC5C4C8),
-                                        fontSize: 14.0,
-                                        fontWeight: FontWeight.w400,
+                                    Expanded(
+                                      child: Text(
+                                        widget.afterMeal[index].medicineName,
+                                        style: TextStyle(
+                                          color: widget.isWidgetActive
+                                              ? const Color(0xFF3D3D3D)
+                                              : const Color(0xFFC5C4C8),
+                                          fontSize: 14.0,
+                                          fontWeight: FontWeight.w400,
+                                        ),
                                       ),
                                     ),
                                     Text(

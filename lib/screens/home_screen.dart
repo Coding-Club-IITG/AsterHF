@@ -9,6 +9,8 @@ import '../widgets/home_screen/medicine_widget.dart';
 import 'package:aster_hf/widgets/home_screen/emergency_contacts_lists.dart';
 import 'package:firebase_core/firebase_core.dart';
 
+import 'form_screen.dart';
+
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
 
@@ -19,7 +21,6 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   // int _selectedIndex = 0;
   String? _username = 'Raghav';
-  CollectionReference firebaseUser = FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser!.email) as CollectionReference<Object?>;
   List<List<Medicine>> morningReminder = List.generate(3, (index) => []);
   List<List<Medicine>> afternoonReminder = List.generate(3, (index) => []);
   List<List<Medicine>> eveningReminder = List.generate(3, (index) => []);
@@ -352,7 +353,9 @@ class _HomeState extends State<Home> {
                     ),
                     const Spacer(),
                     InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>const formScreen()));
+                      },
                       child: const Text(
                         "Quick Add",
                         style: TextStyle(
@@ -376,10 +379,11 @@ class _HomeState extends State<Home> {
                   StreamBuilder(
                       stream: FirebaseFirestore.instance
                           .collection('users')
-                          .doc(firebaseUser.id)
+                          .doc(FirebaseAuth.instance.currentUser!.email)
                           .collection('Reminder')
                           .snapshots(),
-                      builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                      builder:
+                          (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                         morningReminder = List.generate(3, (index) => []);
                         afternoonReminder = List.generate(3, (index) => []);
                         eveningReminder = List.generate(3, (index) => []);
@@ -389,11 +393,6 @@ class _HomeState extends State<Home> {
                           afternoonReminder,
                           eveningReminder
                         ];
-                        List<List<DateTime>> reminderTime = [
-                          morningTime,
-                          afternoonTime,
-                          eveningTime
-                        ];
                         if (!snapshot.hasData) {
                           return const SizedBox(
                             height: 0,
@@ -402,13 +401,29 @@ class _HomeState extends State<Home> {
                         for (var ind = 0;
                             ind < snapshot.data!.docs.length;
                             ind++) {
-                          Map<String, dynamic> data =
-                              snapshot.data!.docs[ind].data() as Map<String, dynamic>;
+                          Map<String, dynamic> data = snapshot.data!.docs[ind]
+                              .data() as Map<String, dynamic>;
                           Medicine currMed = Medicine(
                               medicineName: data['medicineName'],
                               quantity: data['amount']);
                           DateTime currTime =
                               DateFormat.jm().parse(data['timeReminder']);
+                          DateTime addedTime =
+                              (data['currentTime'] as Timestamp).toDate();
+                          List<String> howLong = data['howLong'].split(' ');
+                          if (howLong[1] == 'Days') {
+                            if (DateTime.now().isAfter(addedTime
+                                .add(Duration(days: int.parse(howLong[0]))))) {
+                              continue;
+                            }
+                          }
+                          else{
+                            if (DateTime.now().isAfter(addedTime
+                                .add(Duration(days: (int.parse(howLong[0])/int.parse(data['repeat'])).ceil())))) {
+                              continue;
+                            }
+                          }
+                          print(howLong);
                           if (currTime.isBefore(medTime[0])) {
                             currReminder = 0;
                           } else if (currTime.isBefore(medTime[1])) {
@@ -417,11 +432,9 @@ class _HomeState extends State<Home> {
                             currReminder = 2;
                           }
 
-                          if (currTime
-                              .isBefore(reminderTime[currReminder][0])) {
+                          if (data['foodAndPills'] == "Before Meal") {
                             currReminderTime = 0;
-                          } else if (currTime
-                              .isBefore(reminderTime[currReminder][1])) {
+                          } else if (data['foodAndPills'] == "During Meal") {
                             currReminderTime = 1;
                           } else {
                             currReminderTime = 2;
@@ -528,7 +541,7 @@ class _HomeState extends State<Home> {
                                                                 height: 25,
                                                                 width: 25,
                                                               ),
-                                                              SizedBox(
+                                                              const SizedBox(
                                                                 width: 27,
                                                               ),
                                                               Column(
@@ -540,7 +553,7 @@ class _HomeState extends State<Home> {
                                                                   Text(
                                                                       emergencyContacts[index]
                                                                           .contactName,
-                                                                      style: TextStyle(
+                                                                      style: const TextStyle(
                                                                           color: Color(
                                                                               0xFF695CD4),
                                                                           fontSize:
@@ -550,7 +563,7 @@ class _HomeState extends State<Home> {
                                                                   Text(
                                                                       emergencyContacts[index]
                                                                           .contactSpeciality,
-                                                                      style: TextStyle(
+                                                                      style: const TextStyle(
                                                                           color: Color(
                                                                               0xFF000000),
                                                                           fontSize:
