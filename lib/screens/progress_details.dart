@@ -69,21 +69,38 @@ class _ProgressDetailsState extends State<ProgressDetails> {
             )
           ],
         ),
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: Theme.of(context).primaryColor,
-          onPressed: () {
-            showModalBottomSheet(
-                context: context, builder: (context) => const CategoryBottomSheet(),
-                //backgroundColor: Colors.grey[500],
-                shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(20 ),
-                    )
-                )
-            );
-          },
-          child: const Icon(Icons.add),
-        ),
+        floatingActionButton: FutureBuilder<Map?>(
+            future: getInfo(DateTime.now().toIso8601String().substring(0, 10)),
+            builder: (context,snapshot){
+              if(!snapshot.hasData){
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              if(snapshot.hasError){
+                return const Center(
+                  child: Text('Error loading data'),
+                );
+              }
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const CircularProgressIndicator();
+              }
+              return FloatingActionButton(
+                backgroundColor: Theme.of(context).primaryColor,
+                onPressed: () {
+                  showModalBottomSheet(
+                      context: context, builder: (context) =>  CategoryBottomSheet(a: snapshot.data),
+                      //backgroundColor: Colors.grey[500],
+                      shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.vertical(
+                            top: Radius.circular(20 ),
+                          )
+                      )
+                  );
+                },
+                child: const Icon(Icons.add),
+              );
+            }),
         body: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
           child: Column(

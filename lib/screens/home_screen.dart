@@ -208,7 +208,7 @@ class _HomeState extends State<Home> {
                         return const CircularProgressIndicator();
                       }
 
-                      List <Widget> toShow = vitalWidgets(snapshot);
+                      List <Widget> toShow = vitalWidgets(snapshot,context);
                       if(toShow.length == 0){
                         return Center(
                           child: Text("No updates for today !",
