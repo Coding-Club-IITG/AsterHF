@@ -100,7 +100,7 @@ class ThankYouScreen extends StatelessWidget {
                   double weight = (prefs.getInt('weight1') ?? 0) * 100;
                   weight += (prefs.getInt('weight2') ?? 0) * 10;
                   weight += (prefs.getInt('weight3') ?? 0) * 1;
-                  weight += (prefs.getInt('weight3') ?? 0) * 0.1;
+                  weight += (prefs.getInt('weight4') ?? 0) * 0.1;
 
                   prefs.remove('weight1');
                   prefs.remove('weight2');
