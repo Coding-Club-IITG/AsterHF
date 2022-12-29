@@ -34,6 +34,9 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   google_fonts: ^3.0.1
   firebase_core: ^2.3.0
+  firebase_messaging: ^14.2.0
+  flutter_local_notifications: ^13.0.0
+  onesignal_flutter: ^3.5.0
   firebase_auth: ^4.1.5
   flutter_screenutil: ^5.6.0
   google_sign_in: ^5.4.2

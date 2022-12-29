@@ -1,6 +1,7 @@
 import 'package:aster_hf/controllers/auth.dart';
 import 'package:aster_hf/screens/form_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import './screens/splashscreen.dart';
 
 import 'package:firebase_core/firebase_core.dart';
@@ -15,6 +16,15 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(const MyApp());
+  //
+  await OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
+  await OneSignal.shared.setAppId("b8dd90c8-1c95-421d-952f-a80a713dd479");
+  await OneSignal.shared.getDeviceState().then((value) => {
+    print(value!.userId),
+  });
+  await OneSignal.shared.promptUserForPushNotificationPermission().then((accepted) {
+    print("Accepted permission: $accepted");
+  });
 }
 
 class MyApp extends StatelessWidget {
