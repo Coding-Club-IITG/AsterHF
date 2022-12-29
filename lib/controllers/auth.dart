@@ -1,8 +1,10 @@
 import 'package:aster_hf/main.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:page_transition/page_transition.dart';
 import '../screens/user_data.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class EmailAuth extends ChangeNotifier {
   bool isLoading = false;
@@ -11,13 +13,12 @@ class EmailAuth extends ChangeNotifier {
 
   void changeColor() {
     colori = Colors.red;
-   
+
     notifyListeners();
   }
 
   void changeColor1() {
     colori = const Color.fromARGB(223, 138, 137, 137);
-
 
     notifyListeners();
   }
@@ -140,7 +141,7 @@ class EmailAuth extends ChangeNotifier {
         });
   }
 
-  void signEmailPassword(String email, String password) async {
+  Future<void> signEmailPassword(String email, String password) async {
     try {
       isLoading = true;
       notifyListeners();
@@ -199,10 +200,15 @@ class EmailAuth extends ChangeNotifier {
         isLoading = false;
         notifyListeners();
         showSnackBar('You\'ve successfully logged in!');
-
-        Navigator.of(navigatorKey.currentContext!).pushReplacementNamed(
-            UserData.routename,
-            arguments: {'page': 'blood_pressure', 'progress': 20});
+        Navigator.of(navigatorKey.currentContext!).pushReplacement(
+          PageTransition(
+              child:  const UserData(
+                page: 'blood_pressure',
+                progress: 20,
+                isPoppable: false,
+              ),
+              type: PageTransitionType.fade),
+        );
 
         // ignore: use_build_context_synchronously
       }
@@ -213,7 +219,8 @@ class EmailAuth extends ChangeNotifier {
     }
   }
 
-  void createEmailPassword(String email, String password, String name) async {
+  Future<void> createEmailPassword(
+      String email, String password, String name) async {
     try {
       isLoading = true;
       notifyListeners();
@@ -240,6 +247,65 @@ class EmailAuth extends ChangeNotifier {
       showError(error.message ?? 'Something went Wrong!');
     } catch (err) {
       showError(err.toString());
+    }
+  }
+
+  Future<void> googleSignIn() async {
+    try {
+      final googleAccount = await GoogleSignIn().signIn();
+
+      if (googleAccount != null) {
+        final googleAuth = await googleAccount.authentication;
+        if (googleAuth.accessToken != null && googleAuth.idToken != null) {
+          try {
+            final name = googleAccount.displayName;
+            final email = googleAccount.email;
+            await FirebaseAuth.instance.signInWithCredential(
+              GoogleAuthProvider.credential(
+                accessToken: googleAuth.accessToken,
+                idToken: googleAuth.idToken,
+              ),
+            );
+            await FirebaseFirestore.instance
+                .collection('users')
+                .doc(email)
+                .set({'name': name, 'email': email});
+            // Obtain shared preferences.
+            showSnackBar('You have successfully signed in with Google');
+
+            Navigator.of(navigatorKey.currentContext!).pushReplacement(
+              PageTransition(
+                  child:  const UserData(
+                    page: 'blood_pressure',
+                    progress: 20,
+                    isPoppable: false,
+                  ),
+                  type: PageTransitionType.fade),
+            );
+
+          } on FirebaseException catch (error) {
+            showSnackBar(error.message ?? 'Something Went Wrong');
+          }
+        } else {
+          showSnackBar('Something Went Wrong');
+        }
+      } else {
+        showSnackBar('Something Went Wrong');
+      }
+    } catch (e) {
+      showError(e.toString());
+   
+    }
+  }
+
+  Future<void> googleLogout() async {
+    try {
+      await GoogleSignIn().disconnect();
+      FirebaseAuth.instance.signOut();
+    } on FirebaseAuthException catch (error) {
+      showSnackBar(error.message ?? 'Something Went Wrong');
+    } catch (err) {
+      showSnackBar(err.toString());
     }
   }
 }

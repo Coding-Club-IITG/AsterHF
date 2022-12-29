@@ -26,7 +26,7 @@ class _newExportState extends State<newExport> {
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
+              children: const [
                 Text(
                   'Name of the File',
                   style: TextStyle(
@@ -57,32 +57,32 @@ class _newExportState extends State<newExport> {
                     decoration: InputDecoration(
                       hintText: 'Enter the name of the File',
                       hintStyle: TextStyle(
-                        color: Color.fromRGBO(140, 142, 151, 1),
+                        color: const Color.fromRGBO(140, 142, 151, 1),
                         fontWeight: FontWeight.w500,
                         fontSize: 14.sp,
                       ),
-                      errorBorder: OutlineInputBorder(
+                      errorBorder: const OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10)),
                         borderSide: BorderSide(
                           color: Colors.red,
                           width: 1,
                         ),
                       ),
-                      focusedErrorBorder: OutlineInputBorder(
+                      focusedErrorBorder:const OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10)),
                         borderSide: BorderSide(
                           color: Colors.red,
                           width: 1,
                         ),
                       ),
-                      focusedBorder: OutlineInputBorder(
+                      focusedBorder:const  OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10)),
                         borderSide: BorderSide(
                           color: Colors.grey,
                           width: 1,
                         ),
                       ),
-                      enabledBorder: OutlineInputBorder(
+                      enabledBorder: const OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10)),
                         borderSide: BorderSide(
                           color: Color.fromARGB(224, 224, 224, 224),
@@ -118,28 +118,28 @@ class _newExportState extends State<newExport> {
                         fontWeight: FontWeight.w500,
                         fontSize: 14.sp,
                       ),
-                      errorBorder: OutlineInputBorder(
+                      errorBorder: const OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10)),
                         borderSide: BorderSide(
                           color: Colors.red,
                           width: 1,
                         ),
                       ),
-                      focusedErrorBorder: OutlineInputBorder(
+                      focusedErrorBorder: const OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10)),
                         borderSide: BorderSide(
                           color: Colors.red,
                           width: 1,
                         ),
                       ),
-                      focusedBorder: OutlineInputBorder(
+                      focusedBorder: const OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10)),
                         borderSide: BorderSide(
                           color: Colors.grey,
                           width: 1,
                         ),
                       ),
-                      enabledBorder: OutlineInputBorder(
+                      enabledBorder: const OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10)),
                         borderSide: BorderSide(
                           color: Color.fromARGB(224, 224, 224, 224),
@@ -151,7 +151,7 @@ class _newExportState extends State<newExport> {
                 ),
               ],
             ),
-            SizedBox(height: 12,),
+            const SizedBox(height: 12,),
             Row(
               //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [

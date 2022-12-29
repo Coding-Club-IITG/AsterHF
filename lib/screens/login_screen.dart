@@ -1,4 +1,4 @@
-import 'package:aster_hf/controllers/email_auth.dart';
+import 'package:aster_hf/controllers/auth.dart';
 import 'package:aster_hf/screens/signup_screen.dart';
 
 import 'package:aster_hf/widgets/auth_widgets.dart';
@@ -9,10 +9,9 @@ import 'package:provider/provider.dart';
 import '../controllers/validation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../controllers/google_auth.dart';
+import 'package:page_transition/page_transition.dart';
 
 class LoginScreen extends StatelessWidget {
-
   static const routename = '/login';
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
   final _emailController = TextEditingController();
@@ -42,7 +41,6 @@ class LoginScreen extends StatelessWidget {
           : SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
               child: Container(
-           
                 margin: EdgeInsets.only(
                   left: 25.w,
                   right: 25.w,
@@ -136,7 +134,7 @@ class LoginScreen extends StatelessWidget {
                               ),
                             ),
                           ),
-                          Spacer(),
+                          const Spacer(),
                         ],
                       ),
                       SizedBox(
@@ -194,7 +192,7 @@ class LoginScreen extends StatelessWidget {
                             ),
                           ),
                           onPressed: () async {
-                            await Auth.googleSignIn(context);
+                            await emailAuth.googleSignIn();
                           },
                           child: SizedBox(
                             height: 60.h,
@@ -238,15 +236,18 @@ class LoginScreen extends StatelessWidget {
                               ),
                             ),
                             TextSpan(
-                                text: 'Sign Up',
-                                style: TextStyle(
-                                  color: const Color.fromRGBO(105, 92, 212, 1),
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 15.sp,
-                                ),
-                                recognizer: TapGestureRecognizer()
-                                  ..onTap = () => Navigator.of(context)
-                                      .pushNamed(SignupScreen.routename)),
+                              text: 'Sign Up',
+                              style: TextStyle(
+                                color: const Color.fromRGBO(105, 92, 212, 1),
+                                fontWeight: FontWeight.w600,
+                                fontSize: 15.sp,
+                              ),
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () => Navigator.of(context).push(
+                                    PageTransition(
+                                        child: SignupScreen(),
+                                        type: PageTransitionType.fade)),
+                            )
                           ],
                         ),
                       ),

@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class DataBox extends StatelessWidget {
   final String type;
 
-  DataBox(this.type);
+  const DataBox(this.type, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +22,7 @@ class DataBox extends StatelessWidget {
       ),
       child: ListWheelScrollView.useDelegate(
         itemExtent: 45,
+
         // controller: _controller,
         perspective: 0.005,
         diameterRatio: 1.0,
