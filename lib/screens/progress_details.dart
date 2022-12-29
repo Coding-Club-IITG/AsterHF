@@ -475,9 +475,9 @@ class _ProgressDetailsState extends State<ProgressDetails> {
         DateTime req = today.subtract(Duration(days: i));
         print(req.toIso8601String().substring(0, 10));
         Map? a = await getInfo(req.toIso8601String().substring(0, 10));
-        if (a!['blood_pressure']['Sys'] != null) {
+        if (a?['blood_pressure']['Sys'] != null) {
           dayData.add(ChartBPData(week[req.weekday - 1],
-              a['blood_pressure']['Dia'], a['blood_pressure']['Sys']));
+              a?['blood_pressure']['Dia'], a?['blood_pressure']['Sys']));
         }
       }
       data.add(dayData);
@@ -515,7 +515,9 @@ class _ProgressDetailsState extends State<ProgressDetails> {
         DateTime req = today.subtract(Duration(days: i));
         print(req.toIso8601String().substring(0, 10));
         Map? a = await getInfo(req.toIso8601String().substring(0, 10));
-        dayData.add(ChartData(week[req.weekday - 1], a![vital[index]]));
+        if(a?[vital[index]]!=null) {
+          dayData.add(ChartData(week[req.weekday - 1], a![vital[index]]));
+        }
       }
       data.add(dayData);
       final weekData = <ChartData>[];
@@ -550,8 +552,10 @@ class _ProgressDetailsState extends State<ProgressDetails> {
         DateTime req = today.subtract(Duration(days: i));
         print(req.toIso8601String().substring(0, 10));
         Map? a = await getInfo(req.toIso8601String().substring(0, 10));
-        double data = a!['body_weight'].toDouble();
-        dayData.add(ChartBWData(week[req.weekday - 1], data));
+        if(a?['body_weight']!=null) {
+          double data = a?['body_weight'].toDouble();
+          dayData.add(ChartBWData(week[req.weekday - 1], data));
+        }
       }
       data.add(dayData);
       final weekData = <ChartBWData>[];
