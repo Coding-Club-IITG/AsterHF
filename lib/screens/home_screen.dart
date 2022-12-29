@@ -153,18 +153,18 @@ class _HomeState extends State<Home> {
                         height: 15,
                       ),
                       FutureBuilder(
-                              future: UserDataController.getProgress(),
-                              builder: (context, snapshot) {
-                                if (snapshot.hasData) {
-                                  return DailyLogWidget(
-                                      percentComplete:
-                                          int.parse(snapshot.data.toString()));
-                                } else {
-                                  return const CircularProgressIndicator();
-                                }
-                              },
-                            )
-                          
+                        future: UserDataController.getProgress(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return DailyLogWidget(
+                                percentComplete:
+                                int.parse(snapshot.data.toString()));
+                          } else {
+                            return const CircularProgressIndicator();
+                          }
+                        },
+                      )
+
                     ],
                   ),
                 ),
@@ -192,7 +192,7 @@ class _HomeState extends State<Home> {
             ),
             Container(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 height: 160,
                 width: double.infinity,
                 child: FutureBuilder(
@@ -218,7 +218,7 @@ class _HomeState extends State<Home> {
                           child: ActivityWidget(
                             vitalType: 5,
                             parameterValue:
-                                snapshot.data['blood_oxygen'].toString(),
+                            snapshot.data['blood_oxygen'].toString(),
                           ),
                         ));
                       }
@@ -232,7 +232,7 @@ class _HomeState extends State<Home> {
                           child: ActivityWidget(
                             vitalType: 2,
                             parameterValue:
-                                snapshot.data['body_weight'].toString(),
+                            snapshot.data['body_weight'].toString(),
                           ),
                         ));
                       }
@@ -248,7 +248,7 @@ class _HomeState extends State<Home> {
                           child: ActivityWidget(
                             vitalType: 1,
                             parameterValue:
-                                "${snapshot.data['blood_pressure']['Sys']}/${snapshot.data['blood_pressure']['Dia']}",
+                            "${snapshot.data['blood_pressure']['Sys']}/${snapshot.data['blood_pressure']['Dia']}",
                           ),
                         ));
                       }
@@ -341,17 +341,17 @@ class _HomeState extends State<Home> {
                         );
                       }
                       for (var ind = 0;
-                          ind < snapshot.data!.docs.length;
-                          ind++) {
+                      ind < snapshot.data!.docs.length;
+                      ind++) {
                         Map<String, dynamic> data = snapshot.data!.docs[ind]
                             .data() as Map<String, dynamic>;
                         Medicine currMed = Medicine(
                             medicineName: data['medicineName'],
                             quantity: data['amount']);
                         DateTime currTime =
-                            DateFormat.jm().parse(data['timeReminder']);
+                        DateFormat.jm().parse(data['timeReminder']);
                         DateTime addedTime =
-                            (data['currentTime'] as Timestamp).toDate();
+                        (data['currentTime'] as Timestamp).toDate();
                         List<String> howLong = data['howLong'].split(' ');
                         if (howLong[1] == 'Days') {
                           if (DateTime.now().isAfter(addedTime
@@ -361,7 +361,7 @@ class _HomeState extends State<Home> {
                         } else {
                           if (DateTime.now().isAfter(addedTime.add(Duration(
                               days: (int.parse(howLong[0]) /
-                                      int.parse(data['repeat']))
+                                  int.parse(data['repeat']))
                                   .ceil())))) {
                             continue;
                           }
@@ -394,19 +394,19 @@ class _HomeState extends State<Home> {
                             scrollDirection: Axis.horizontal,
                             children: [
                               MedicineWidget(
-                                  // isWidgetActive: true,
+                                // isWidgetActive: true,
                                   timeForMedicineIntake: "Morning",
                                   beforeMeal: morningReminder[0],
                                   duringMeal: morningReminder[1],
                                   afterMeal: morningReminder[2]),
                               MedicineWidget(
-                                  // isWidgetActive: false,
+                                // isWidgetActive: false,
                                   timeForMedicineIntake: "Afternoon",
                                   beforeMeal: afternoonReminder[0],
                                   duringMeal: afternoonReminder[1],
                                   afterMeal: afternoonReminder[2]),
                               MedicineWidget(
-                                  // isWidgetActive: false,
+                                // isWidgetActive: false,
                                   timeForMedicineIntake: "Night",
                                   beforeMeal: eveningReminder[0],
                                   duringMeal: eveningReminder[1],
@@ -455,31 +455,31 @@ class _HomeState extends State<Home> {
                                             23, 0, 41, 0),
                                         child: Column(
                                           crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                          CrossAxisAlignment.start,
                                           children: [
                                             const SizedBox(height: 20),
                                             SizedBox(
                                               height: 180,
                                               child: ListView.builder(
                                                   itemCount:
-                                                      emergencyContacts.length,
+                                                  emergencyContacts.length,
                                                   itemBuilder:
                                                       (BuildContext context,
-                                                          int index) {
+                                                      int index) {
                                                     return Container(
                                                         color: const Color(
                                                             0xFFFFFFFF),
                                                         height: 60,
                                                         child: Row(
                                                           crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .center,
+                                                          CrossAxisAlignment
+                                                              .center,
                                                           children: [
                                                             Image.asset(
                                                               emergencyContacts[
-                                                                              index]
-                                                                          .contactName ==
-                                                                      "Emergency Ambulance"
+                                                              index]
+                                                                  .contactName ==
+                                                                  "Emergency Ambulance"
                                                                   ? 'assets/images/ambulance_logo.png'
                                                                   : 'assets/images/doctor_logo.png',
                                                               height: 25,
@@ -490,11 +490,11 @@ class _HomeState extends State<Home> {
                                                             ),
                                                             Column(
                                                               mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .center,
+                                                              MainAxisAlignment
+                                                                  .center,
                                                               crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
+                                                              CrossAxisAlignment
+                                                                  .start,
                                                               children: [
                                                                 Text(
                                                                     emergencyContacts[index]
@@ -503,9 +503,9 @@ class _HomeState extends State<Home> {
                                                                         color: Color(
                                                                             0xFF695CD4),
                                                                         fontSize:
-                                                                            14,
+                                                                        14,
                                                                         fontWeight:
-                                                                            FontWeight.w600)),
+                                                                        FontWeight.w600)),
                                                                 Text(
                                                                     emergencyContacts[index]
                                                                         .contactSpeciality,
@@ -513,16 +513,16 @@ class _HomeState extends State<Home> {
                                                                         color: Color(
                                                                             0xFF000000),
                                                                         fontSize:
-                                                                            12,
+                                                                        12,
                                                                         fontWeight:
-                                                                            FontWeight.w400)),
+                                                                        FontWeight.w400)),
                                                               ],
                                                             ),
                                                             const Spacer(),
                                                             GestureDetector(
                                                               onTap: () {},
                                                               child:
-                                                                  Image.asset(
+                                                              Image.asset(
                                                                 'assets/images/call_logo.png',
                                                                 height: 20,
                                                                 width: 20,
