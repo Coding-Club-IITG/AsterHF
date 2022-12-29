@@ -72,7 +72,7 @@ class _ActivityWidgetState extends State<ActivityWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 135,
+      height: 70,
       width: 145,
       decoration: BoxDecoration(
           color: Colors.white,

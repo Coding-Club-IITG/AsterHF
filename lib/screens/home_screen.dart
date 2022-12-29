@@ -153,18 +153,18 @@ class _HomeState extends State<Home> {
                         height: 15,
                       ),
                       FutureBuilder(
-                        future: UserDataController.getProgress(),
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            return DailyLogWidget(
-                                percentComplete:
-                                int.parse(snapshot.data.toString()));
-                          } else {
-                            return const CircularProgressIndicator();
-                          }
-                        },
-                      )
-
+                              future: UserDataController.getProgress(),
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData) {
+                                  return DailyLogWidget(
+                                      percentComplete:
+                                          int.parse(snapshot.data.toString()));
+                                } else {
+                                  return Center(child: const CircularProgressIndicator());
+                                }
+                              },
+                            )
+                          
                     ],
                   ),
                 ),
@@ -198,7 +198,6 @@ class _HomeState extends State<Home> {
                 child: FutureBuilder(
                     future: HomeScreenController.getUserData(),
                     builder: (BuildContext context, AsyncSnapshot snapshot) {
-                      List<Widget> toShow = [];
                       if (!snapshot.hasData || snapshot.data == null) {
                         return const SizedBox(height: 135);
                       }
@@ -208,81 +207,24 @@ class _HomeState extends State<Home> {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const CircularProgressIndicator();
                       }
-                      if (snapshot.data!.data()!.containsKey('blood_oxygen')) {
-                        toShow.add(Container(
-                          margin: const EdgeInsets.only(right: 10),
-                          width: 145,
-                          height: 135,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15)),
-                          child: ActivityWidget(
-                            vitalType: 5,
-                            parameterValue:
-                            snapshot.data['blood_oxygen'].toString(),
-                          ),
-                        ));
-                      }
-                      if (snapshot.data!.data()!.containsKey('body_weight')) {
-                        toShow.add(Container(
-                          margin: const EdgeInsets.only(right: 10),
-                          width: 145,
-                          height: 135,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15)),
-                          child: ActivityWidget(
-                            vitalType: 2,
-                            parameterValue:
-                            snapshot.data['body_weight'].toString(),
-                          ),
-                        ));
-                      }
-                      if (snapshot.data!
-                          .data()!
-                          .containsKey('blood_pressure')) {
-                        toShow.add(Container(
-                          margin: const EdgeInsets.only(right: 10),
-                          width: 145,
-                          height: 135,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15)),
-                          child: ActivityWidget(
-                            vitalType: 1,
-                            parameterValue:
-                            "${snapshot.data['blood_pressure']['Sys']}/${snapshot.data['blood_pressure']['Dia']}",
-                          ),
-                        ));
-                      }
-                      if (snapshot.data!.data()!.containsKey('glucose_level')) {
-                        toShow.add(Container(
-                          margin: const EdgeInsets.only(right: 10),
-                          width: 145,
-                          height: 135,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15)),
-                          child: ActivityWidget(
-                            vitalType: 3,
-                            parameterValue: "${snapshot.data['glucose_level']}",
-                          ),
-                        ));
-                      }
-                      if (snapshot.data!.data()!.containsKey('heart_rate')) {
-                        toShow.add(Container(
-                          margin: const EdgeInsets.only(right: 10),
-                          width: 145,
-                          height: 135,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15)),
-                          child: ActivityWidget(
-                            vitalType: 4,
-                            parameterValue: "${snapshot.data['heart_rate']}",
-                          ),
-                        ));
+
+                      List <Widget> toShow = vitalWidgets(snapshot);
+                      if(toShow.length == 0){
+                        return Center(
+                          child: Text("No updates for today !",
+                          style: TextStyle(
+                            color: Color(0xFF3D3D3D),
+                            fontWeight: FontWeight.w600,
+                            fontSize: 14
+                          ),),
+                        );
                       }
                       return ListView(
                         scrollDirection: Axis.horizontal,
                         children: toShow,
                       );
-                    })),
+                    }
+                    )),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Row(
