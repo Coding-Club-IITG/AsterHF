@@ -1,7 +1,10 @@
+import 'dart:ffi';
+
 import 'package:aster_hf/main.dart';
 import 'package:aster_hf/screens/first_screen.dart';
 import 'package:aster_hf/screens/home_screen.dart';
 import 'package:aster_hf/screens/user_data.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -43,6 +46,7 @@ class _SplashScreenState extends State<SplashScreen> {
               child: const FirstScreen(), type: PageTransitionType.fade));
     } else {
       final data = await UserDataController.getNextScreen();
+      // final bool f = getPercentage() as bool;
 
       if (data['page'] == 'home_screen') {
         Navigator.pushReplacement(navigatorKey.currentContext!,
@@ -86,4 +90,37 @@ class _SplashScreenState extends State<SplashScreen> {
       ),
     );
   }
+
+// Future<bool> getPercentage() async {
+//   int percent = 0;
+//   DateTime today = DateTime.now();
+//   var snapshot = await FirebaseFirestore.instance
+//       .collection('users')
+//       .doc(FirebaseAuth.instance.currentUser?.email)
+//       .collection('Vitals')
+//       .doc(today.toIso8601String().substring(0, 10))
+//       .get();
+//   if(snapshot.exists) {
+//     Map? a = snapshot.data();
+//     if (a!['blood_oxygen']!=null){
+//       percent += 20;
+//     }
+//     if (a['body_weight']!=null){
+//       percent += 20;
+//     }
+//     if (a['glucose_level']!=null){
+//       percent += 20;
+//     }
+//     if (a['heartRate']!=null){
+//       percent += 20;
+//     }
+//     if (a['blood_pressure']['Sys']!=null){
+//       percent += 20;
+//     }
+//   }
+//   if(percent==100){
+//     return true;
+//   }
+//   return false;
+// }
 }

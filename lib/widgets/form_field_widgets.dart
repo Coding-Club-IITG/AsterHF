@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class TimeContainer extends StatefulWidget {
@@ -110,14 +111,14 @@ class TimeContainerState extends State<TimeContainer> {
             ),
             SizedBox(
               height: widget.height,
-              width: 45,
+              width: 45.w,
               child: TextField(
                 keyboardType: TextInputType.number,
                 controller: minutes_,
                 onChanged: (text) {
                   widget.callbackTime(_time(hours_, minutes_, zone));
                 },
-                
+
                 inputFormatters: [
                   CustomRangeTextInputFormatter(rang_: 60),
                 ],
@@ -168,13 +169,13 @@ class TimeContainerState extends State<TimeContainer> {
                 ),
               ),
             ),
-            const SizedBox(
-              width: 4,
+            SizedBox(
+              width: 4.w,
             ),
             Container(
-            
+
               height: widget.height,
-              width: 50,
+              width: 50.w,
               decoration: BoxDecoration(
                   border: Border.all(
                     color: const Color(0xff8C8E97),
@@ -234,9 +235,9 @@ class CustomRangeTextInputFormatter extends TextInputFormatter {
   CustomRangeTextInputFormatter({required this.rang_});
   @override
   TextEditingValue formatEditUpdate(
-    TextEditingValue oldValue,
-    TextEditingValue newValue,
-  ) {
+      TextEditingValue oldValue,
+      TextEditingValue newValue,
+      ) {
     if (newValue.text == '') {
       return const TextEditingValue();
     } else if (int.parse(newValue.text) < 1) {
@@ -259,11 +260,11 @@ class DropdownWithHeading extends StatefulWidget {
   // const dropdown_heading({super.key});
   const DropdownWithHeading(
       {Key? mykey,
-      required this.items,
-      required this.nameController,
-      required this.callbackFunction,
-      required this.width,
-      required this.heading})
+        required this.items,
+        required this.nameController,
+        required this.callbackFunction,
+        required this.width,
+        required this.heading})
       : super(key: mykey);
 
   @override
@@ -278,14 +279,14 @@ class _dropdownWithHeadingState extends State<DropdownWithHeading> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Heading(heading: widget.heading),
-        const SizedBox(
-          height: 5,
+        SizedBox(
+          height: 5.h,
         ),
         Container(
           width: widget.width,
           decoration: BoxDecoration(
               border: Border.all(
-                color: Color(0xff8C8E97),
+                color: const Color(0xff8C8E97),
               ),
               borderRadius: BorderRadius.circular(9)),
           child: GetText(
@@ -336,7 +337,7 @@ class _getTextState extends State<GetText> {
               value: value,
               child: Text(
                 value,
-                style: const TextStyle(color: Color(0xff8C8E97)),
+                style: TextStyle(color: const Color(0xff8C8E97), fontSize: 15.sp),
               ),
             );
           }).toList(),
@@ -357,7 +358,7 @@ class Heading extends StatelessWidget {
       heading,
       style: GoogleFonts.poppins(
         fontWeight: FontWeight.w600,
-        fontSize: 14,
+        fontSize: 14.sp,
       ),
     );
   }

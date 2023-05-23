@@ -201,45 +201,12 @@ class _ProgressDetailsState extends State<ProgressDetails> {
                                       : FontWeight.w400),
                             ),
                           ),
-                          TextButton(
-                            onPressed: () {
-                              setState(() {
-                                choice = 2;
-                              });
-                            },
-                            child: Text(
-                              'Month',
-                              style: TextStyle(
-                                  fontFamily: 'poppins',
-                                  color: Colors.white,
-                                  fontSize: 14,
-                                  fontWeight: choice == 2
-                                      ? FontWeight.w600
-                                      : FontWeight.w400),
-                            ),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              setState(() {
-                                choice = 3;
-                              });
-                            },
-                            child: Text(
-                              'Year',
-                              style: TextStyle(
-                                  fontFamily: 'poppins',
-                                  color: Colors.white,
-                                  fontSize: 14,
-                                  fontWeight: choice == 3
-                                      ? FontWeight.w600
-                                      : FontWeight.w400),
-                            ),
-                          ),
                         ],
                       ),
                     ),
+                    choice==0?
                     FutureBuilder<List>(
-                      future: produceData(widget.index),
+                      future: produceDataD(widget.index),
                       builder: (context, snapshot){
                         if(!snapshot.hasData){
                           return const Center(
@@ -252,13 +219,37 @@ class _ProgressDetailsState extends State<ProgressDetails> {
                           );
                         }
                         if(widget.index==0){
-                          return BPChart(chartData: snapshot.data![choice],);
+                          return BPChart(chartData: snapshot.data,);
                         }
                         else if(widget.index == 1){
-                          return BWChart(chartData: snapshot.data![choice],);
+                          return BWChart(chartData: snapshot.data,);
                         }
                         else{
-                          return OtherChart(chartData: snapshot.data![choice],);
+                          return OtherChart(chartData: snapshot.data,);
+                        }
+                      },
+                    ) :
+                    FutureBuilder<List>(
+                      future: produceDataW(widget.index),
+                      builder: (context, snapshot){
+                        if(!snapshot.hasData){
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+                        if(snapshot.hasError){
+                          return const Center(
+                            child: Text('Error loading data'),
+                          );
+                        }
+                        if(widget.index==0){
+                          return BPChart(chartData: snapshot.data,);
+                        }
+                        else if(widget.index == 1){
+                          return BWChart(chartData: snapshot.data,);
+                        }
+                        else{
+                          return OtherChart(chartData: snapshot.data,);
                         }
                       },
                     ),
@@ -483,7 +474,7 @@ class _ProgressDetailsState extends State<ProgressDetails> {
         ));
   }
 
-  Future<List> produceData(int index) async {
+  Future<List> produceDataD(int index) async {
     var data = [];
     if (index == 0) {
       final dayData = <ChartBPData>[];
@@ -497,7 +488,39 @@ class _ProgressDetailsState extends State<ProgressDetails> {
               a?['blood_pressure']['Dia'], a?['blood_pressure']['Sys']));
         }
       }
-      data.add(dayData);
+      return dayData;
+    } else if (index != 1) {
+      final dayData = <ChartData>[];
+      for (var i = 6; i >= 0; i--) {
+        DateTime today = DateTime.now();
+        DateTime req = today.subtract(Duration(days: i));
+        print(req.toIso8601String().substring(0, 10));
+        Map? a = await getInfo(req.toIso8601String().substring(0, 10));
+        if(a?[vital[index]]!=null) {
+          dayData.add(ChartData(week[req.weekday - 1], a![vital[index]]));
+        }
+      }
+      return dayData;
+    } else {
+      final dayData = <ChartBWData>[];
+      for (var i = 6; i >= 0; i--) {
+        DateTime today = DateTime.now();
+        DateTime req = today.subtract(Duration(days: i));
+        print(req.toIso8601String().substring(0, 10));
+        Map? a = await getInfo(req.toIso8601String().substring(0, 10));
+        if(a?['body_weight']!=null) {
+          double data = a?['body_weight'].toDouble();
+          dayData.add(ChartBWData(week[req.weekday - 1], data));
+        }
+      }
+      return dayData;
+    }
+    return data;
+  }
+
+  Future<List> produceDataW(int index) async {
+    var data = [];
+    if (index == 0) {
       final weekData = <ChartBPData>[];
       for (var i = 4; i >= 0; i--) {
         int sysSum = 0, diaSum = 0, c = 0;
@@ -524,19 +547,8 @@ class _ProgressDetailsState extends State<ProgressDetails> {
             ? weekData.add(ChartBPData(x, diaSum ~/ c, sysSum ~/ c))
             : weekData.add(ChartBPData(x, 0, 0));
       }
-      data.add(weekData);
+      return weekData;
     } else if (index != 1) {
-      final dayData = <ChartData>[];
-      for (var i = 6; i >= 0; i--) {
-        DateTime today = DateTime.now();
-        DateTime req = today.subtract(Duration(days: i));
-        print(req.toIso8601String().substring(0, 10));
-        Map? a = await getInfo(req.toIso8601String().substring(0, 10));
-        if(a?[vital[index]]!=null) {
-          dayData.add(ChartData(week[req.weekday - 1], a![vital[index]]));
-        }
-      }
-      data.add(dayData);
       final weekData = <ChartData>[];
       for (var i = 4; i >= 0; i--) {
         int sum = 0, c = 0;
@@ -561,20 +573,8 @@ class _ProgressDetailsState extends State<ProgressDetails> {
             ? weekData.add(ChartData(x, sum ~/ c))
             : weekData.add(ChartData(x, 0));
       }
-      data.add(weekData);
+      return weekData;
     } else {
-      final dayData = <ChartBWData>[];
-      for (var i = 6; i >= 0; i--) {
-        DateTime today = DateTime.now();
-        DateTime req = today.subtract(Duration(days: i));
-        print(req.toIso8601String().substring(0, 10));
-        Map? a = await getInfo(req.toIso8601String().substring(0, 10));
-        if(a?['body_weight']!=null) {
-          double data = a?['body_weight'].toDouble();
-          dayData.add(ChartBWData(week[req.weekday - 1], data));
-        }
-      }
-      data.add(dayData);
       final weekData = <ChartBWData>[];
       for (var i = 4; i >= 0; i--) {
         double sum = 0, c = 0;
@@ -599,7 +599,7 @@ class _ProgressDetailsState extends State<ProgressDetails> {
             ? weekData.add(ChartBWData(x, sum / c))
             : weekData.add(ChartBWData(x, 0));
       }
-      data.add(weekData);
+      return weekData;
     }
     return data;
   }
