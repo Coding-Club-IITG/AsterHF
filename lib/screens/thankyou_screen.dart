@@ -156,13 +156,16 @@ class ThankYouScreen extends StatelessWidget {
                     if (!isGlucoseSkipped && glucose != 0)
                       'glucose_level': glucose,
                     if (!isHeartSkipped && heartRate != 0)
-                      'heartRate': heartRate
+                      'heart_rate': heartRate
                   },SetOptions(merge: true));
 
-                  Navigator.pushReplacement(
-                      navigatorKey.currentContext!,
-                      PageTransition(
-                          child: const Home(), type: PageTransitionType.fade));
+                  // Navigator.pushReplacement(
+                  //     navigatorKey.currentContext!,
+                  //     PageTransition(
+                  //         child: const Home(), type: PageTransitionType.fade));
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(builder: (context) =>
+                      const Home()), (Route<dynamic> route) => false);
                 } on FirebaseAuthException catch (error) {
                   print(error);
                   //HANDLE ERROR HERE

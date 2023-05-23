@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:aster_hf/widgets/food_pills.dart';
 import 'package:aster_hf/widgets/form_field_widgets.dart';
@@ -101,7 +102,7 @@ class _formScreenState extends State<formScreen> {
     try {
       await FirebaseFirestore.instance
           .collection('users')
-          .doc('mauryakk2004@gmail.com')
+          .doc(FirebaseAuth.instance.currentUser?.email)
           .collection('Reminder')
           .doc(medicineNameController.text)
           .set(data);
@@ -123,32 +124,36 @@ class _formScreenState extends State<formScreen> {
         foregroundColor: Colors.black,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(
+          icon: Icon(
             Icons.arrow_back_ios,
-            size: 22,
+            size: 22.sp,
             // color: Colors.black,
           ),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
         actions: [
           IconButton(
-              onPressed: () {},
-              icon: const Icon(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: Icon(
                 Icons.close,
-                size: 24,
+                size: 24.sp,
               ))
         ],
         title: Center(
           child: Text(
             'Set Medication Reminder',
             style:
-                GoogleFonts.poppins(fontWeight: FontWeight.w600, fontSize: 16),
+            GoogleFonts.poppins(fontWeight: FontWeight.w600, fontSize: 16.sp),
           ),
         ),
       ),
       body: SingleChildScrollView(
         child: Container(
-            margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+            margin: EdgeInsets.symmetric(horizontal: 24.w, vertical: 10.h),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -157,28 +162,28 @@ class _formScreenState extends State<formScreen> {
                   child: Text(
                     'You can add reminders according to how the doctor has prescribed. Prescription automatically gets added if your doctor adds it to your account directly from his side',
                     style: GoogleFonts.poppins(
-                        fontSize: 15,
-                        color: Color(0xff8C8E97),
+                        fontSize: 15.sp,
+                        color: const Color(0xff8C8E97),
                         fontWeight: FontWeight.w500),
                   ),
                 ),
-                const SizedBox(
-                  height: 5,
+                SizedBox(
+                  height: 5.h,
                 ),
                 const Heading(
                   heading: 'Medicine Name',
                 ),
-                const SizedBox(
-                  height: 5,
+                SizedBox(
+                  height: 5.h,
                 ),
                 SizedBox(
                   width: double.infinity,
                   height: height * 0.08,
                   child: TextField(
                     controller: medicineNameController,
-                    style: const TextStyle(
+                    style: TextStyle(
                         color: Color(0xff8C8E97),
-                        fontSize: 14,
+                        fontSize: 14.sp,
                         fontWeight: FontWeight.w500),
                     cursorColor: Colors.grey,
                     decoration: InputDecoration(
@@ -188,95 +193,95 @@ class _formScreenState extends State<formScreen> {
                       suffixIcon: SvgPicture.asset(
                         'assets/form_images/qr.svg',
                         fit: BoxFit.scaleDown,
-                        height: 10,
+                        height: 10.h,
                       ),
-                      contentPadding: const EdgeInsets.symmetric(vertical: 18,horizontal: 16),
-                      hintStyle: const TextStyle(
-                        color: Color.fromRGBO(140, 142, 151, 1),
+                      contentPadding: EdgeInsets.symmetric(vertical: 18.h,horizontal: 16.w),
+                      hintStyle: TextStyle(
+                        color: const Color.fromRGBO(140, 142, 151, 1),
                         fontWeight: FontWeight.w500,
-                        fontSize: 14,
+                        fontSize: 14.sp,
                       ),
-                      errorBorder: const OutlineInputBorder(
+                      errorBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10)),
                         borderSide: BorderSide(
                           color: Colors.red,
-                          width: 1,
+                          width: 1.w,
                         ),
                       ),
-                      focusedErrorBorder: const OutlineInputBorder(
+                      focusedErrorBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10)),
                         borderSide: BorderSide(
                           color: Colors.red,
-                          width: 1,
+                          width: 1.w,
                         ),
                       ),
-                      focusedBorder: const OutlineInputBorder(
+                      focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10)),
                         borderSide: BorderSide(
                           color: Colors.grey,
-                          width: 1,
+                          width: 1.w,
                         ),
                       ),
-                      enabledBorder: const OutlineInputBorder(
+                      enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10)),
                         borderSide: BorderSide(
                           color: Color.fromARGB(224, 224, 224, 224),
-                          width: 1,
+                          width: 1.w,
                         ),
                       ),
                     ),
                   ),
                 ),
-               
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Expanded(
-                        // height: max(height*0.09,67),
+                      // height: max(height*0.09,67),
                         child: Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 0, 7, 0),
-                      child: DropdownWithHeading(
-                        items: itemAmount,
-                        nameController: valueAmount,
-                        callbackFunction: callbackAmount,
-                        width: width * 0.5,
-                        heading: 'Amount',
-                      ),
-                    )),
+                          padding: const EdgeInsets.fromLTRB(0, 0, 7, 0),
+                          child: DropdownWithHeading(
+                            items: itemAmount,
+                            nameController: valueAmount,
+                            callbackFunction: callbackAmount,
+                            width: width * 0.5,
+                            heading: 'Amount',
+                          ),
+                        )),
                     Expanded(
-                        // height: max(height*0.09,67),
+                      // height: max(height*0.09,67),
                         child: Padding(
-                      padding: const EdgeInsets.fromLTRB(7, 0, 0, 0),
-                      child: DropdownWithHeading(
-                        items: itemRepeat,
-                        nameController: valueRepeat,
-                        callbackFunction: callbackRepeat,
-                        width: width * 0.5,
-                        heading: 'Repeat',
-                      ),
-                    )),
+                          padding: const EdgeInsets.fromLTRB(7, 0, 0, 0),
+                          child: DropdownWithHeading(
+                            items: itemRepeat,
+                            nameController: valueRepeat,
+                            callbackFunction: callbackRepeat,
+                            width: width * 0.5,
+                            heading: 'Repeat',
+                          ),
+                        )),
                   ],
                 ),
-                const SizedBox(
-                  height: 5,
+                SizedBox(
+                  height: 5.h,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Expanded(
-                        // height: max(height*0.09,67),
+                      // height: max(height*0.09,67),
                         child: Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 0, 7, 0),
-                      child: DropdownWithHeading(
-                        items: itemFrequency,
-                        nameController: valueFrequency,
-                        callbackFunction: callbackFrequency,
-                        width: width * 0.5,
-                        heading: 'Frequency',
-                      ),
-                    )),
+                          padding: EdgeInsets.fromLTRB(0, 0, 7.w, 0),
+                          child: DropdownWithHeading(
+                            items: itemFrequency,
+                            nameController: valueFrequency,
+                            callbackFunction: callbackFrequency,
+                            width: width * 0.5,
+                            heading: 'Frequency',
+                          ),
+                        )),
                     Expanded(
-                        // height: max(height*0.09,67),
+                      // height: max(height*0.09,67),
                         child: Padding(
                             padding: const EdgeInsets.fromLTRB(7, 0, 0, 0),
                             // child: DropdownWithHeading(items: itemHowLong, nameController: valueHowLong, callbackFunction: callbackHowLong, width: width*0.5, heading: 'How Long',),
@@ -285,8 +290,8 @@ class _formScreenState extends State<formScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 const Heading(heading: 'How Long'),
-                                const SizedBox(
-                                  height: 5,
+                                SizedBox(
+                                  height: 5.h,
                                 ),
                                 Container(
                                   width: width * 0.5,
@@ -326,18 +331,18 @@ class _formScreenState extends State<formScreen> {
                                               },
                                               icon: const SizedBox.shrink(),
                                               items: itemHowLong.map<
-                                                      DropdownMenuItem<String>>(
-                                                  (String value) {
-                                                return DropdownMenuItem<String>(
-                                                  value: value,
-                                                  child: Text(
-                                                    value,
-                                                    style: const TextStyle(
-                                                        color:
+                                                  DropdownMenuItem<String>>(
+                                                      (String value) {
+                                                    return DropdownMenuItem<String>(
+                                                      value: value,
+                                                      child: Text(
+                                                        value,
+                                                        style: const TextStyle(
+                                                            color:
                                                             Color(0xff8C8E97)),
-                                                  ),
-                                                );
-                                              }).toList(),
+                                                      ),
+                                                    );
+                                                  }).toList(),
                                             ),
                                           ),
                                         ),
@@ -349,19 +354,19 @@ class _formScreenState extends State<formScreen> {
                             ))),
                   ],
                 ),
-                const SizedBox(
-                  height: 7,
+                SizedBox(
+                  height: 7.h,
                 ),
                 SizedBox(
                     height: max(height * 0.13, 103),
                     child: FoodAndPills(
-                      height: max(height * 0.1, 80),
+                      height: 80.h,
                       width: width * 0.27,
                       callbackFunction: callbackMeal,
                       whichTime: duringMeal,
                     )),
-                const SizedBox(
-                  height: 7,
+                SizedBox(
+                  height: 7.h,
                 ),
                 Row(
                   children: [
@@ -375,11 +380,12 @@ class _formScreenState extends State<formScreen> {
                     const Spacer(),
                   ],
                 ),
-                const SizedBox(
-                  height: 3,
+                SizedBox(
+                  height: 3.h,
                 ),
                 SizedBox(
-                    height: max(height * 0.09, 75),
+                  // height: max(height * 0.09, 75),
+                    height: 100.h,
                     child: DropdownWithHeading(
                       items: itemReminders,
                       nameController: valueReminder,
@@ -387,8 +393,8 @@ class _formScreenState extends State<formScreen> {
                       width: width,
                       heading: 'Remind me',
                     )),
-                const SizedBox(
-                  height: 10,
+                SizedBox(
+                  height: 10.h,
                 ),
                 GestureDetector(
                   onTap: () {
@@ -401,7 +407,7 @@ class _formScreenState extends State<formScreen> {
                       splashColor: const Color.fromRGBO(105, 92, 212, 0.8),
                       borderRadius: const BorderRadius.all(Radius.circular(10)),
                       onTap: ()  {
-                        
+
                       },
                       child: Button(
                         text: 'Save Medication Reminder',

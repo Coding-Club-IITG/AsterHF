@@ -79,12 +79,27 @@ class _HomeState extends State<Home> {
                                       fontSize: 16,
                                       fontWeight: FontWeight.w600,
                                       color: Colors.white)),
-                              Text(
-                                _username,
-                                style: const TextStyle(
-                                    fontSize: 28,
-                                    fontWeight: FontWeight.w400,
-                                    color: Colors.white),
+                              FutureBuilder(
+                                future: getName(),
+                                builder: (context, snapshot) {
+                                  if (snapshot.hasData) {
+                                    return Text(
+                                      snapshot.data.toString(),
+                                      style: const TextStyle(
+                                          fontSize: 28,
+                                          fontWeight: FontWeight.w400,
+                                          color: Colors.white),
+                                    );
+                                  } else {
+                                    return const Text(
+                                      "User",
+                                      style: TextStyle(
+                                          fontSize: 28,
+                                          fontWeight: FontWeight.w400,
+                                          color: Colors.white),
+                                    );
+                                  }
+                                },
                               )
                             ],
                           ),
@@ -153,18 +168,19 @@ class _HomeState extends State<Home> {
                         height: 15,
                       ),
                       FutureBuilder(
-                              future: UserDataController.getProgress(),
-                              builder: (context, snapshot) {
-                                if (snapshot.hasData) {
-                                  return DailyLogWidget(
-                                      percentComplete:
-                                          int.parse(snapshot.data.toString()));
-                                } else {
-                                  return Center(child: const CircularProgressIndicator());
-                                }
-                              },
-                            )
-                          
+                        // future: UserDataController.getProgress(),
+                        future: getPercentage(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return DailyLogWidget(
+                                percentComplete:
+                                int.parse(snapshot.data.toString()));
+                          } else {
+                            return const Center(child: CircularProgressIndicator());
+                          }
+                        },
+                      )
+
                     ],
                   ),
                 ),
@@ -209,14 +225,14 @@ class _HomeState extends State<Home> {
                       }
 
                       List <Widget> toShow = vitalWidgets(snapshot,context);
-                      if(toShow.length == 0){
-                        return Center(
+                      if(toShow.isEmpty){
+                        return const Center(
                           child: Text("No updates for today !",
-                          style: TextStyle(
-                            color: Color(0xFF3D3D3D),
-                            fontWeight: FontWeight.w600,
-                            fontSize: 14
-                          ),),
+                            style: TextStyle(
+                                color: Color(0xFF3D3D3D),
+                                fontWeight: FontWeight.w600,
+                                fontSize: 14
+                            ),),
                         );
                       }
                       return ListView(
@@ -224,7 +240,7 @@ class _HomeState extends State<Home> {
                         children: toShow,
                       );
                     }
-                    )),
+                )),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Row(
@@ -500,31 +516,45 @@ class _HomeState extends State<Home> {
           ],
         ),
       ),
-      // bottomNavigationBar: BottomNavigationBar(
-      //   type: BottomNavigationBarType.fixed,
-      //   backgroundColor: const Color(0xFFFDFDFD),
-      //   items: const <BottomNavigationBarItem>[
-      //     BottomNavigationBarItem(
-      //       icon: Icon(Icons.home_rounded),
-      //       label: 'Home',
-      //     ),
-      //     BottomNavigationBarItem(
-      //       icon: Icon(Icons.apartment_rounded),
-      //       label: 'Med Card',
-      //     ),
-      //     BottomNavigationBarItem(
-      //       icon: Icon(Icons.group_outlined),
-      //       label: 'Community',
-      //     ),
-      //     BottomNavigationBarItem(
-      //       icon: Icon(Icons.person_outline_rounded),
-      //       label: 'Profile',
-      //     )
-      //   ],
-      //   currentIndex: _selectedIndex,
-      //   selectedItemColor: Theme.of(context).primaryColor,
-      //   onTap: _onItemTapped,
-      // ),
     );
+  }
+
+  Future<String?> getName() async {
+    var snapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser?.email)
+        .get();
+    Map? a = snapshot.data();
+    return a?['name'];
+  }
+
+  Future<int?> getPercentage() async {
+    int percent = 0;
+    DateTime today = DateTime.now();
+    var snapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser?.email)
+        .collection('Vitals')
+        .doc(today.toIso8601String().substring(0, 10))
+        .get();
+    if(snapshot.exists) {
+      Map? a = snapshot.data();
+      if (a!['blood_oxygen']!=null){
+        percent += 20;
+      }
+      if (a['body_weight']!=null){
+        percent += 20;
+      }
+      if (a['glucose_level']!=null){
+        percent += 20;
+      }
+      if (a['heart_rate']!=null){
+        percent += 20;
+      }
+      if (a['blood_pressure']['Sys']!=null){
+        percent += 20;
+      }
+    }
+    return percent;
   }
 }
