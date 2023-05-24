@@ -396,7 +396,7 @@ class _formScreenState extends State<formScreen> {
                 SizedBox(
                   height: 10.h,
                 ),
-                GestureDetector(
+               /* GestureDetector(
                   onTap: () {
                     _register();
                   },
@@ -416,6 +416,24 @@ class _formScreenState extends State<formScreen> {
                         fontweight: FontWeight.w600,
                         height: 50.h,
                       ),
+                    ),
+                  ),
+                ),*/
+                SizedBox(
+                  width: double.infinity,
+                  child: TextButton(
+                    onPressed: () {_register();},
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Colors.deepPurpleAccent),
+                      shape: MaterialStateProperty.all(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                      ),
+                    ),
+                        child: const Text(
+                      'Save Medication Reminder',
+                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600,color: Colors.white),
                     ),
                   ),
                 ),
