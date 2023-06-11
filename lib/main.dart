@@ -4,29 +4,32 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import './screens/splashscreen.dart';
 import 'package:flutter/services.dart';
-
-
+import 'package:aster_hf/controllers/notification.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:timezone/timezone.dart' as tz;
+import 'package:timezone/data/latest.dart' as tz;
+
 
 final navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await NotificationService().initNotification(); // <----
   runApp(const MyApp());
   //
-  await OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
+  /*await OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
   await OneSignal.shared.setAppId("b8dd90c8-1c95-421d-952f-a80a713dd479");
   await OneSignal.shared.getDeviceState().then((value) => {
     print(value!.userId),
   });
   await OneSignal.shared.promptUserForPushNotificationPermission().then((accepted) {
     print("Accepted permission: $accepted");
-  });
+  });*/
 }
 
 class MyApp extends StatelessWidget {

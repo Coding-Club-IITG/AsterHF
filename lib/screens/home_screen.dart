@@ -3,14 +3,14 @@ import 'package:aster_hf/controllers/user_data_controller.dart';
 import 'package:aster_hf/widgets/home_screen/home_screen_widgets.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../widgets/button.dart';
 import '../widgets/home_screen/medicine_widget.dart';
 import 'package:aster_hf/widgets/home_screen/emergency_contacts_lists.dart';
-
 import 'form_screen.dart';
+import 'package:timezone/timezone.dart' as tz;
+import 'package:timezone/data/latest.dart' as tz;
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -47,6 +47,11 @@ class _HomeState extends State<Home> {
   //     _selectedIndex = index;
   //   });
   // }
+  @override
+  void initState() {
+    super.initState();
+    tz.initializeTimeZones();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -349,6 +354,7 @@ class _HomeState extends State<Home> {
                           height: 215,
                           width: double.infinity,
                           child: ListView(
+                            //itemExtent: snapshot.data!.docs.length.toDouble(),
                             scrollDirection: Axis.horizontal,
                             children: [
                               MedicineWidget(
@@ -420,7 +426,7 @@ class _HomeState extends State<Home> {
                                               height: 180,
                                               child: ListView.builder(
                                                   itemCount:
-                                                  emergencyContacts.length,
+                                                  emergencyContacts.length.compareTo(0),
                                                   itemBuilder:
                                                       (BuildContext context,
                                                       int index) {
@@ -527,6 +533,7 @@ class _HomeState extends State<Home> {
     Map? a = snapshot.data();
     return a?['name'];
   }
+
 
   Future<int?> getPercentage() async {
     int percent = 0;
