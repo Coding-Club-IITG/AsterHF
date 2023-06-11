@@ -1,11 +1,14 @@
+import 'package:aster_hf/screens/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:aster_hf/widgets/food_pills.dart';
 import 'package:aster_hf/widgets/form_field_widgets.dart';
 import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../controllers/notification.dart';
 import '../widgets/button.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -38,7 +41,7 @@ class _formScreenState extends State<formScreen> {
   String valueFrequency = "Daily";
   String valueHowLong = "Days";
   var valueReminder = "5 minutes before";
-  var valueTime = "12:00 PM";
+  String valueTime = "12:00 PM";
   var duringMealList = ['', 'Before Meal', 'During Meal', 'After Meal'];
   int duringMeal = 2;
   TextEditingController valueHowLongInt = TextEditingController();
@@ -110,6 +113,31 @@ class _formScreenState extends State<formScreen> {
       print(e);
     }
     print(data);
+    var time = DateTime.now();
+    var hour = time.hour;
+    var min = time.minute;
+    //print(time);
+    var  n = valueTime.length;
+    var t = valueTime.substring(0,n-3);
+    var h="",i=0;
+    for( i =0;i<t.length;i++){
+        if(t[i]==':'){i++; break;}
+        h+=t[i];
+    }
+    var m = t[i]+t[i+1];
+    var hour2 = int.parse(h);
+    var min2 = int.parse(m);
+    var am = valueTime.substring(n-2,n);
+    if(am == "PM"){
+       hour2 += 12;
+    }
+    var sch = 0,scm=0,sct=0;
+    sch = (hour2>=hour)?  (hour2-hour)*60*60 : (24-hour+hour2)*60*60;
+    scm = (min2>=min)?  (min2-min)*60 : (60-min+min2)*60;
+    sct = scm+sch;
+    print(sct);
+    NotificationService().showNotification(
+        1, medicineNameController.text,"Take your medicine", sct,);
   }
 
   @override
@@ -422,7 +450,11 @@ class _formScreenState extends State<formScreen> {
                 SizedBox(
                   width: double.infinity,
                   child: TextButton(
-                    onPressed: () {_register();},
+                    onPressed: () {_register();Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const Home()));
+                      },
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(Colors.deepPurpleAccent),
                       shape: MaterialStateProperty.all(
