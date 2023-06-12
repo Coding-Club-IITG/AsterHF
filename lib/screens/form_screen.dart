@@ -22,14 +22,12 @@ class formScreen extends StatefulWidget {
 class _formScreenState extends State<formScreen> {
   set value(String? value) {}
   final itemAmount = ["1", "2", "3", "4", "5"];
-  final itemRepeat = ["1", "2", "3", "4"];
+ // final itemRepeat = ["1", "2", "3", "4"];
   final itemFrequency = [
     "Daily",
-    "Alternate days",
     "Once a week",
-    "Twice a week"
   ];
-  final itemHowLong = ["Days", "Times"];
+ // final itemHowLong = ["Days", "Times"];
   final itemReminders = [
     "5 minutes before",
     "10 minutes before",
@@ -37,9 +35,9 @@ class _formScreenState extends State<formScreen> {
     "1 hours before"
   ];
   String valueAmount = "1";
-  String valueRepeat = "1";
+ // String valueRepeat = "1";
   String valueFrequency = "Daily";
-  String valueHowLong = "Days";
+ // String valueHowLong = "Days";
   var valueReminder = "5 minutes before";
   String valueTime = "12:00 PM";
   var duringMealList = ['', 'Before Meal', 'During Meal', 'After Meal'];
@@ -53,11 +51,11 @@ class _formScreenState extends State<formScreen> {
     });
   }
 
-  callbackRepeat(varTopic) {
+  /*callbackRepeat(varTopic) {
     setState(() {
       valueRepeat = varTopic;
     });
-  }
+  }*/
 
   callbackFrequency(varTopic) {
     setState(() {
@@ -65,11 +63,11 @@ class _formScreenState extends State<formScreen> {
     });
   }
 
-  callbackHowLong(varTopic) {
+ /* callbackHowLong(varTopic) {
     setState(() {
       valueHowLong = varTopic;
     });
-  }
+  }*/
 
   callbackReminder(varTopic) {
     setState(() {
@@ -94,9 +92,9 @@ class _formScreenState extends State<formScreen> {
     var data = {
       'medicineName': medicineNameController.text,
       'amount': valueAmount,
-      'repeat': valueRepeat,
+     // 'repeat': valueRepeat,
       'frequency': valueFrequency,
-      'howLong': valueHowLong,
+     // 'howLong': valueHowLong,
       'foodAndPills': duringMealList[duringMeal],
       'reminder': valueReminder,
       'timeReminder': valueTime,
@@ -125,19 +123,67 @@ class _formScreenState extends State<formScreen> {
         h+=t[i];
     }
     var m = t[i]+t[i+1];
-    var hour2 = int.parse(h);
-    var min2 = int.parse(m);
+    int hour2 = int.parse(h);
+    int min2 = int.parse(m);
     var am = valueTime.substring(n-2,n);
     if(am == "PM"){
        hour2 += 12;
     }
-    var sch = 0,scm=0,sct=0;
+   /* var sch = 0,scm=0,sct=0;
     sch = (hour2>=hour)?  (hour2-hour)*60*60 : (24-hour+hour2)*60*60;
     scm = (min2>=min)?  (min2-min)*60 : (60-min+min2)*60;
     sct = scm+sch;
     print(sct);
     NotificationService().showNotification(
-        1, medicineNameController.text,"Take your medicine", sct,);
+        1, medicineNameController.text,"Take your medicine", sct,);*/
+    RepeatInterval freq = RepeatInterval.daily;
+    if(valueFrequency == "Daily"){
+      freq = RepeatInterval.daily;
+    }
+    if(valueFrequency == "Once a week"){
+      freq = RepeatInterval.weekly;
+    }
+    if(valueReminder == "5 minutes before"){
+        if(min2<5){
+           if(hour2 == 0)
+            hour2 = 23;
+           else hour2-=1;
+           min2 = 55 + min2;
+        }
+        else if(min2>=5){
+          min2 -= 5;
+        }
+    }
+    else if(valueReminder == "10 minutes before"){
+      if(min2<10){
+        if(hour2 == 0)
+          hour2 = 23;
+        else hour2-=1;
+        min2 = 50 + min2;
+      }
+      else if(min2>=10){
+        min2 -= 10;
+      }
+    }
+    else if(valueReminder == "30 minutes before"){
+      if(min2<30){
+        if(hour2 == 0)
+          hour2 = 23;
+        else hour2-=1;
+        min2 = 30 + min2;
+      }
+      else if(min2>=30){
+        min2 -= 30;
+      }
+    }
+    else if(valueReminder == "1 hour before"){
+        if(hour2 == 0)
+          hour2 = 23;
+        else hour2-=1;
+    }
+    var dy = time.day;
+     NotificationService().scheduleDailyNotification(
+      0, medicineNameController.text,"Gentle Reminder to take medicine", hour2,min2,freq,dy);
   }
 
   @override
@@ -272,11 +318,11 @@ class _formScreenState extends State<formScreen> {
                             items: itemAmount,
                             nameController: valueAmount,
                             callbackFunction: callbackAmount,
-                            width: width * 0.5,
+                            width: double.infinity,
                             heading: 'Amount',
                           ),
                         )),
-                    Expanded(
+                   /* Expanded(
                       // height: max(height*0.09,67),
                         child: Padding(
                           padding: const EdgeInsets.fromLTRB(7, 0, 0, 0),
@@ -287,7 +333,7 @@ class _formScreenState extends State<formScreen> {
                             width: width * 0.5,
                             heading: 'Repeat',
                           ),
-                        )),
+                        )),*/
                   ],
                 ),
                 SizedBox(
@@ -304,11 +350,11 @@ class _formScreenState extends State<formScreen> {
                             items: itemFrequency,
                             nameController: valueFrequency,
                             callbackFunction: callbackFrequency,
-                            width: width * 0.5,
+                            width: double.infinity,
                             heading: 'Frequency',
                           ),
                         )),
-                    Expanded(
+                    /*Expanded(
                       // height: max(height*0.09,67),
                         child: Padding(
                             padding: const EdgeInsets.fromLTRB(7, 0, 0, 0),
@@ -379,7 +425,7 @@ class _formScreenState extends State<formScreen> {
                                   ),
                                 ),
                               ],
-                            ))),
+                            ))),*/
                   ],
                 ),
                 SizedBox(
@@ -389,7 +435,8 @@ class _formScreenState extends State<formScreen> {
                     height: max(height * 0.13, 103),
                     child: FoodAndPills(
                       height: 80.h,
-                      width: width * 0.27,
+                     // width: width * 0.27,
+                      width: double.infinity,
                       callbackFunction: callbackMeal,
                       whichTime: duringMeal,
                     )),
