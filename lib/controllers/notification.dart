@@ -38,7 +38,7 @@ class NotificationService {
     await flutterLocalNotificationsPlugin.initialize(initializationSettings);
   }
 
-  Future<void> showNotification(int id, String title, String body,
+  /*Future<void> showNotification(int id, String title, String body,
        int scheduledNotificationDateTime) async {
     await flutterLocalNotificationsPlugin.zonedSchedule(
       id,
@@ -51,13 +51,6 @@ class NotificationService {
             channelDescription: "Aster HF",
             importance: Importance.max,
             priority: Priority.max),
-        // iOS details
-       /* iOS: IOSNotificationDetails(
-          sound: 'default.wav',
-          presentAlert: true,
-          presentBadge: true,
-          presentSound: true,
-        ),*/
       ),
       // Type of time interpretation
       uiLocalNotificationDateInterpretation:
@@ -65,14 +58,38 @@ class NotificationService {
       androidAllowWhileIdle: true,//To show notification even when the app is closed
     );
 
-   /* const AndroidNotificationDetails androidNotificationDetails =
-    AndroidNotificationDetails(
-        '1', 'Aster Hf',
-        channelDescription: 'Medicine Reminder');
-     NotificationDetails notificationDetails =
-    NotificationDetails(android: androidNotificationDetails);
-    await flutterLocalNotificationsPlugin.periodicallyShow(id,title,body,freq, notificationDetails,
-    androidAllowWhileIdle: true);*/
+  }*/
+  Future<void> scheduleDailyNotification(int id, String title, String body, int h ,int m,RepeatInterval freq, var day) async {
+    await flutterLocalNotificationsPlugin.zonedSchedule(
+        id,
+        title,
+        body,
+        (freq== "Daily") ? daily(h,m): weekly(h,m,day),
+        const NotificationDetails(
+          android: AndroidNotificationDetails('1',
+              'Aster HF',
+              channelDescription: 'Reminder'),
+        ),
+       // androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+        uiLocalNotificationDateInterpretation:
+        UILocalNotificationDateInterpretation.absoluteTime,
+        matchDateTimeComponents: DateTimeComponents.time,
+        androidAllowWhileIdle: true);
+  }
+  tz.TZDateTime daily(int h, int m) {
+    final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
+    tz.TZDateTime scheduledDate = tz.TZDateTime(tz.local, now.year, now.month, now.day, h,m);
+    if (scheduledDate.isBefore(now)) {
+      scheduledDate = scheduledDate.add(const Duration(days: 1));
+    }
+    return scheduledDate;
+  }
 
+  tz.TZDateTime weekly(int h ,int m, String day) {
+    tz.TZDateTime scheduledDate = daily(h,m);
+    while (scheduledDate.weekday != day) {
+      scheduledDate = scheduledDate.add(const Duration(days: 1));
+    }
+    return scheduledDate;
   }
 }

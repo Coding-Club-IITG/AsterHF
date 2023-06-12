@@ -315,8 +315,8 @@ class _HomeState extends State<Home> {
                         DateFormat.jm().parse(data['timeReminder']);
                         DateTime addedTime =
                         (data['currentTime'] as Timestamp).toDate();
-                        List<String> howLong = data['howLong'].split(' ');
-                        if (howLong[1] == 'Days') {
+                       // List<String> howLong = data['howLong'].split(' ');
+                        /*if (howLong[1] == 'Days') {
                           if (DateTime.now().isAfter(addedTime
                               .add(Duration(days: int.parse(howLong[0]))))) {
                             continue;
@@ -328,7 +328,7 @@ class _HomeState extends State<Home> {
                                   .ceil())))) {
                             continue;
                           }
-                        }
+                        }*/
 
                         if (currTime.isBefore(medTime[0])) {
                           currReminder = 0;
