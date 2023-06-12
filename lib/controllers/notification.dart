@@ -34,60 +34,65 @@ class NotificationService {
     InitializationSettings(
         android: initializationSettingsAndroid,
         iOS: initializationSettingsIOS);
-    // the initialization settings are initialized after they are setted
+    // the initialization settings are initialized after they are set
     await flutterLocalNotificationsPlugin.initialize(initializationSettings);
   }
 
-  /*Future<void> showNotification(int id, String title, String body,
-       int scheduledNotificationDateTime) async {
+  Future<void> showNotification(int id, String title, String body, DateTime time) async {
     await flutterLocalNotificationsPlugin.zonedSchedule(
       id,
       title,
       body,
-      tz.TZDateTime.now(tz.local).add(Duration(seconds: scheduledNotificationDateTime)),
+      daily(time),
       const NotificationDetails(
         // Android details
-        android: AndroidNotificationDetails('main_channel', 'Main Channel',
-            channelDescription: "Aster HF",
+        android: AndroidNotificationDetails('main_channel1', 'Aster HF1',
+            channelDescription: "Reminder",
             importance: Importance.max,
             priority: Priority.max),
       ),
       // Type of time interpretation
+      matchDateTimeComponents: DateTimeComponents.time,
       uiLocalNotificationDateInterpretation:
       UILocalNotificationDateInterpretation.absoluteTime,
       androidAllowWhileIdle: true,//To show notification even when the app is closed
     );
 
-  }*/
-  Future<void> scheduleDailyNotification(int id, String title, String body, int h ,int m,RepeatInterval freq, var day) async {
+  }
+  Future<void> scheduleWeeklyNotification(int id, String title, String body, DateTime time) async {
     await flutterLocalNotificationsPlugin.zonedSchedule(
         id,
         title,
         body,
-        (freq== "Daily") ? daily(h,m): weekly(h,m,day),
+        weekly(time),
         const NotificationDetails(
-          android: AndroidNotificationDetails('1',
-              'Aster HF',
-              channelDescription: 'Reminder'),
+          android: AndroidNotificationDetails('main_channel2',
+              'Aster HF2',
+              channelDescription: 'Reminder',
+              importance: Importance.max,
+              priority: Priority.max,
+
+          ),
         ),
-       // androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
         uiLocalNotificationDateInterpretation:
         UILocalNotificationDateInterpretation.absoluteTime,
-        matchDateTimeComponents: DateTimeComponents.time,
+        matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime,
         androidAllowWhileIdle: true);
   }
-  tz.TZDateTime daily(int h, int m) {
+  tz.TZDateTime daily(DateTime time) {
     final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
-    tz.TZDateTime scheduledDate = tz.TZDateTime(tz.local, now.year, now.month, now.day, h,m);
+    tz.TZDateTime scheduledDate = tz.TZDateTime(tz.local, now.year, now.month, now.day, time.hour,time.minute,0);
+
     if (scheduledDate.isBefore(now)) {
       scheduledDate = scheduledDate.add(const Duration(days: 1));
     }
-    return scheduledDate;
+   // print(scheduledDate.subtract(Duration(hours: 5,minutes: 30)));
+    return scheduledDate.subtract(Duration(hours: 5,minutes: 30));
   }
 
-  tz.TZDateTime weekly(int h ,int m, String day) {
-    tz.TZDateTime scheduledDate = daily(h,m);
-    while (scheduledDate.weekday != day) {
+  tz.TZDateTime weekly(DateTime time) {
+    tz.TZDateTime scheduledDate = daily(time);
+    while (scheduledDate.weekday != time.day) {
       scheduledDate = scheduledDate.add(const Duration(days: 1));
     }
     return scheduledDate;
