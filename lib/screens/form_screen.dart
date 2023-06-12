@@ -25,7 +25,7 @@ class _formScreenState extends State<formScreen> {
  // final itemRepeat = ["1", "2", "3", "4"];
   final itemFrequency = [
     "Daily",
-    "Once a week",
+    "Weekly",
   ];
  // final itemHowLong = ["Days", "Times"];
   final itemReminders = [
@@ -111,31 +111,27 @@ class _formScreenState extends State<formScreen> {
       print(e);
     }
     print(data);
-    var time = DateTime.now();
-    var hour = time.hour;
-    var min = time.minute;
-    //print(time);
-    var  n = valueTime.length;
+
+    var n = valueTime.length;
     var t = valueTime.substring(0,n-3);
-    var h="",i=0;
-    for( i =0;i<t.length;i++){
+    var h = "" ,i=0;
+    for(i =0;i<t.length;i++){
         if(t[i]==':'){i++; break;}
         h+=t[i];
     }
-    var m = t[i]+t[i+1];
+    var m = t[i];
+    if(i+1<n-3) m+=t[i+1];
     int hour2 = int.parse(h);
     int min2 = int.parse(m);
+
     var am = valueTime.substring(n-2,n);
-    if(am == "PM"){
+    if(am == "PM" && hour2!=12){
        hour2 += 12;
     }
-   /* var sch = 0,scm=0,sct=0;
-    sch = (hour2>=hour)?  (hour2-hour)*60*60 : (24-hour+hour2)*60*60;
-    scm = (min2>=min)?  (min2-min)*60 : (60-min+min2)*60;
-    sct = scm+sch;
-    print(sct);
-    NotificationService().showNotification(
-        1, medicineNameController.text,"Take your medicine", sct,);*/
+    if(am == "AM" && hour2==12){
+      hour2 = 0;
+    }
+
     RepeatInterval freq = RepeatInterval.daily;
     if(valueFrequency == "Daily"){
       freq = RepeatInterval.daily;
@@ -146,8 +142,8 @@ class _formScreenState extends State<formScreen> {
     if(valueReminder == "5 minutes before"){
         if(min2<5){
            if(hour2 == 0)
-            hour2 = 23;
-           else hour2-=1;
+            {hour2 = 23;}
+           else {hour2-=1;}
            min2 = 55 + min2;
         }
         else if(min2>=5){
@@ -157,8 +153,8 @@ class _formScreenState extends State<formScreen> {
     else if(valueReminder == "10 minutes before"){
       if(min2<10){
         if(hour2 == 0)
-          hour2 = 23;
-        else hour2-=1;
+         { hour2 = 23;}
+        else {hour2-=1;}
         min2 = 50 + min2;
       }
       else if(min2>=10){
@@ -167,9 +163,10 @@ class _formScreenState extends State<formScreen> {
     }
     else if(valueReminder == "30 minutes before"){
       if(min2<30){
-        if(hour2 == 0)
+        if(hour2 == 0) {
           hour2 = 23;
-        else hour2-=1;
+        }
+        else {hour2-=1;}
         min2 = 30 + min2;
       }
       else if(min2>=30){
@@ -178,12 +175,19 @@ class _formScreenState extends State<formScreen> {
     }
     else if(valueReminder == "1 hour before"){
         if(hour2 == 0)
-          hour2 = 23;
-        else hour2-=1;
+         { hour2 = 23;}
+        else {hour2-=1;}
     }
-    var dy = time.day;
-     NotificationService().scheduleDailyNotification(
-      0, medicineNameController.text,"Gentle Reminder to take medicine", hour2,min2,freq,dy);
+    var time = DateTime.now();
+    var ti = DateTime(time.year,time.month,time.day,hour2,min2,0);
+    if(freq == RepeatInterval.daily){
+      NotificationService().showNotification(
+      1, medicineNameController.text,"Take your medicine",ti);}
+    else {
+      NotificationService().scheduleWeeklyNotification(
+          1, medicineNameController.text, "Gentle Reminder to take medicine",
+          ti);
+    }
   }
 
   @override
