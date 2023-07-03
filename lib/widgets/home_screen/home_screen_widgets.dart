@@ -178,7 +178,7 @@ class _DailyLogWidgetState extends State<DailyLogWidget> {
                       height: 1.5,
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  SizedBox(height: 8.h),
                   SizedBox(
                     height: 24,
                     width: 180.h,

@@ -175,62 +175,62 @@ class SignupScreen extends StatelessWidget {
                       SizedBox(
                         height: 12.h,
                       ),
-                      Text(
-                        'or continue with',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: const Color.fromRGBO(140, 142, 151, 1),
-                          fontWeight: FontWeight.w500,
-                          fontSize: 15.sp,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 15.h,
-                      ),
-                      Container(
-                        padding: EdgeInsets.symmetric(horizontal: 120.w),
-                        child: OutlinedButton(
-                          style: ButtonStyle(
-                            shape: MaterialStateProperty.all(
-                              const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(10),
-                                ),
-                              ),
-                            ),
-                          ),
-                          onPressed: () async {
-                            await emailAuth.googleSignIn();
-                          },
-                          child: SizedBox(
-                            height: 60.h,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Image.asset(
-                                  'assets/images/google.png',
-                                  height: 24.0.h,
-                                ),
-                                SizedBox(
-                                  width: 10.h,
-                                ),
-                                Text(
-                                  'Google',
-                                  style: TextStyle(
-                                    color:
-                                        const Color.fromRGBO(140, 142, 151, 1),
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 14.sp,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 50.h,
-                      ),
+                      // Text(
+                      //   'or continue with',
+                      //   textAlign: TextAlign.center,
+                      //   style: TextStyle(
+                      //     color: const Color.fromRGBO(140, 142, 151, 1),
+                      //     fontWeight: FontWeight.w500,
+                      //     fontSize: 15.sp,
+                      //   ),
+                      // ),
+                      // SizedBox(
+                      //   height: 15.h,
+                      // ),
+                      // Container(
+                      //   padding: EdgeInsets.symmetric(horizontal: 120.w),
+                      //   child: OutlinedButton(
+                      //     style: ButtonStyle(
+                      //       shape: MaterialStateProperty.all(
+                      //         const RoundedRectangleBorder(
+                      //           borderRadius: BorderRadius.all(
+                      //             Radius.circular(10),
+                      //           ),
+                      //         ),
+                      //       ),
+                      //     ),
+                      //     onPressed: () async {
+                      //       await emailAuth.googleSignIn();
+                      //     },
+                      //     child: SizedBox(
+                      //       height: 60.h,
+                      //       child: Row(
+                      //         mainAxisAlignment: MainAxisAlignment.center,
+                      //         children: [
+                      //           Image.asset(
+                      //             'assets/images/google.png',
+                      //             height: 24.0.h,
+                      //           ),
+                      //           SizedBox(
+                      //             width: 10.h,
+                      //           ),
+                      //           Text(
+                      //             'Google',
+                      //             style: TextStyle(
+                      //               color:
+                      //                   const Color.fromRGBO(140, 142, 151, 1),
+                      //               fontWeight: FontWeight.w500,
+                      //               fontSize: 14.sp,
+                      //             ),
+                      //           ),
+                      //         ],
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
+                      // SizedBox(
+                      //   height: 80.h,
+                      // ),
                       RichText(
                         textAlign: TextAlign.center,
                         text: TextSpan(
