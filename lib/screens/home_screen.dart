@@ -1,5 +1,6 @@
 import 'package:aster_hf/controllers/home_screen_controller.dart';
 import 'package:aster_hf/controllers/user_data_controller.dart';
+import 'package:aster_hf/screens/first_screen.dart';
 import 'package:aster_hf/widgets/home_screen/home_screen_widgets.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -21,7 +22,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   // int _selectedIndex = 0;
-  final String _username = 'Raghav';
+  // final String _username = 'Raghav';
   List<List<Medicine>> morningReminder = List.generate(3, (index) => []);
   List<List<Medicine>> afternoonReminder = List.generate(3, (index) => []);
   List<List<Medicine>> eveningReminder = List.generate(3, (index) => []);
@@ -112,9 +113,13 @@ class _HomeState extends State<Home> {
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 10),
                             child: IconButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                FirebaseAuth.instance.signOut();
+                                Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(
+                                    builder: (context) => FirstScreen()), (Route route) => false);
+                              },
                               color: Colors.white,
-                              icon: const Icon(Icons.notifications_none_rounded,
+                              icon: const Icon(Icons.logout,
                                   size: 30),
                             ),
                           )
